@@ -6,15 +6,15 @@ namespace App.Application.Account.Command.SentConfirm;
 
 public class SentConfirmCommandHandler : IRequestHandler<SendConfirmCommand, GenericResponse<bool>>
 {
-    private readonly IIdentityService _identityService;
-    public SentConfirmCommandHandler(IIdentityService identityService)
+    private readonly IAccountService _accountService;
+    public SentConfirmCommandHandler(IAccountService accountService)
     {
-        _identityService = identityService;
+        _accountService = accountService;
     }
 
 
     public async Task<GenericResponse<bool>> Handle(SendConfirmCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.SentConfirmMailAsync(request.UserId);
+        return await _accountService.SentConfirmMailAsync(request.UserId);
     }
 }

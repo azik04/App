@@ -3,17 +3,17 @@ using App.Application.Common.Interfaces.Services;
 using App.Application.Common.Responses;
 using MediatR;
 
-namespace App.Application.Auth.Command.Auth;
+namespace App.Application.Auth.Command.SignIn;
 
-public class AuthCommandHandler : IRequestHandler<AuthCommand, TokenResponse>
+public class SignInCommandHandler : IRequestHandler<SignInCommand, TokenResponse>
 {
     private readonly IAuthService _authService;
-    public AuthCommandHandler (IAuthService authService)
+    public SignInCommandHandler (IAuthService authService)
     {
         _authService = authService; 
     }
 
-    public async Task<TokenResponse> Handle(AuthCommand request, CancellationToken cancellationToken)
+    public async Task<TokenResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
         var dto = new AuthDto
         {
@@ -21,6 +21,6 @@ public class AuthCommandHandler : IRequestHandler<AuthCommand, TokenResponse>
             Password = request.Password,
         };
 
-        return await _authService.AuthAsync(dto);
+        return await _authService.SignInAsync(dto);
     }
 }

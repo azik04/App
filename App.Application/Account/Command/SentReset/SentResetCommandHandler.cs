@@ -6,15 +6,15 @@ namespace App.Application.Account.Command.SentReset;
 
 public class SentResetCommandHandler : IRequestHandler<SendResetCommand, GenericResponse<bool>>
 {
-    private readonly IIdentityService _identityService;
-    public SentResetCommandHandler(IIdentityService identityService)
+    private readonly IAccountService _accountService;
+    public SentResetCommandHandler(IAccountService accountService)
     {
-        _identityService = identityService; 
+        _accountService = accountService; 
     }
 
 
     public async Task<GenericResponse<bool>> Handle(SendResetCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.SentResetMailAsync(request.Email);
+        return await _accountService.SentResetMailAsync(request.Email);
     }
 }

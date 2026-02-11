@@ -6,6 +6,7 @@ namespace App.Application.Common.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<TokenResponse> AuthAsync(AuthDto dto);
-    Task<GenericResponse<string>> GenerateRefrashToken(string refrashToken);
+    Task<TokenResponse> SignInAsync(AuthDto dto);
+    Task<GenericResponse<string>> GenerateAccessTokenAsync(string refrashToken);
+    Task<GenericResponse<bool>> SignOutAsync(string refrashToken);
 }

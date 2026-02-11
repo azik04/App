@@ -38,7 +38,7 @@ public class AccountController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPost("send-confirm")]
+    [HttpGet("send-confirm")]
     public async Task<IActionResult> SentConfirmEmail(SendConfirmCommand command)
     {
         var result = await _mediator.Send(command);
@@ -52,7 +52,7 @@ public class AccountController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPost("send-reset")]
+    [HttpGet("send-reset")]
     public async Task<IActionResult> SentResetPassword(SendResetCommand command)
     {
         var result = await _mediator.Send(command);

@@ -1,9 +1,9 @@
-﻿using App.Application.Common.DTO.Identity;
+﻿using App.Application.Common.DTO.Account;
 using App.Application.Common.Responses;
 
 namespace App.Application.Common.Interfaces.Services;
 
-public interface IIdentityService
+public interface IAccountService
 {
     Task<GenericResponse<bool>> SignUpAsync(CreateIdentityDto dto);
     Task<GenericResponse<bool>> SentConfirmMailAsync(string userId);

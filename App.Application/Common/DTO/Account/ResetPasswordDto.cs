@@ -1,4 +1,4 @@
-﻿namespace App.Application.Common.DTO.Identity;
+﻿namespace App.Application.Common.DTO.Account;
 
 public class ResetPasswordDto
 {

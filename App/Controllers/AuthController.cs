@@ -1,7 +1,7 @@
-﻿using App.Application.Auth.Command.Auth;
+﻿using App.Application.Auth.Command.GenerateAccessToken;
+using App.Application.Auth.Command.SignIn;
+using App.Application.Auth.Command.SignOut;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
@@ -14,15 +14,25 @@ public class AuthController : ControllerBase
     public AuthController(IMediator mediator) => _mediator = mediator;
 
 
-    [HttpPost]
-    public async Task<IActionResult> Auth(AuthCommand command)
+    [HttpPost("sign-in")]
+    public async Task<IActionResult> SignInAsync(SignInCommand command)
     {
         var result = await _mediator.Send(command);
-        
-        if (!result.Success)
-            return BadRequest(result);
-
-        return Ok(result);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    
+    [HttpPut("sign-out")]
+    public async Task<IActionResult> SignOutAsync(SignOutCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    
+    [HttpGet("access-token")]
+    public async Task<IActionResult> GenerateAccessTokenAsync(GenerateAccessTokenCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 }
 

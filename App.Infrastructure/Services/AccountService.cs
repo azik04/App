@@ -1,4 +1,4 @@
-﻿using App.Application.Common.DTO.Identity;
+﻿using App.Application.Common.DTO.Account;
 using App.Application.Common.Interfaces;
 using App.Application.Common.Interfaces.Integrations;
 using App.Application.Common.Interfaces.Services;
@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace App.Infrastructure.Services;
 
-public class IdentityService : IIdentityService
+public class AccountService : IAccountService
 {
     private readonly UserManager<ApplicationUsers> _userManager;
     private readonly SignInManager<ApplicationUsers> _signInManager;
     private readonly IGenericRepository<Clients> _clientRep;
     private readonly IGenericRepository<Workers> _workerRep;
     private readonly IEmailService _emailService;
-    public IdentityService(UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager,
+    public AccountService(UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager,
         IGenericRepository<Clients> clientRep, IGenericRepository<Workers> workerRep, IEmailService emailService)
     {
         _emailService = emailService;

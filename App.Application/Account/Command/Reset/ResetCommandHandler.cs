@@ -6,15 +6,15 @@ namespace App.Application.Account.Command.Reset;
 
 public class ResetCommandHandler : IRequestHandler<ResetCommand, GenericResponse<bool>>
 {
-    private readonly IIdentityService _identityService;
-    public ResetCommandHandler(IIdentityService identityService)
+    private readonly IAccountService _accountService;
+    public ResetCommandHandler(IAccountService accountService)
     {
-        _identityService = identityService;
+        _accountService = accountService;
     }
 
 
     public async Task<GenericResponse<bool>> Handle(ResetCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.ResetPasswordAsync(request.Email, request.Token, request.Dto);
+        return await _accountService.ResetPasswordAsync(request.Email, request.Token, request.Dto);
     }
 }

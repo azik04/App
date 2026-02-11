@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using App.Application.Common.DTO.Identity;
+﻿using App.Application.Common.DTO.Account;
 using App.Application.Common.Responses;
 using MediatR;
 

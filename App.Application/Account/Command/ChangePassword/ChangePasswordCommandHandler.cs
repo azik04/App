@@ -6,14 +6,14 @@ namespace App.Application.Account.Command.ChangePassword;
 
 public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, GenericResponse<bool>>
 {
-    private readonly IIdentityService _identityService;
-    public ChangePasswordCommandHandler(IIdentityService identityService)
+    private readonly IAccountService _accountService;
+    public ChangePasswordCommandHandler(IAccountService accountService)
     {
-        _identityService = identityService;
+        _accountService = accountService;
     }
 
     public async Task<GenericResponse<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.ChangePasswordAsync(request.userId, request.dto);
+        return await _accountService.ChangePasswordAsync(request.userId, request.dto);
     }
 }

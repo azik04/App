@@ -1,6 +1,6 @@
-﻿namespace App.Application.Common.DTO.Identity;
+﻿namespace App.Application.Common.DTO.User;
 
-public class GetAllUsers
+public class GetAllUserDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }

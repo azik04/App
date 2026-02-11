@@ -7,6 +7,7 @@ using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using App.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Services;
 
@@ -26,7 +27,7 @@ public class AuthService : IAuthService
         _refreshesRepository = refreshesRepository;
     }
 
-    public async Task<TokenResponse> AuthAsync(AuthDto dto)
+    public async Task<TokenResponse> SignInAsync(AuthDto dto)
      {
         var entity = await _userManager.FindByEmailAsync(dto.Email);
         if (entity == null)
@@ -59,8 +60,34 @@ public class AuthService : IAuthService
         return TokenResponse.Ok(accessToken, refreshToken);
      }
 
-     public Task<GenericResponse<string>> GenerateRefrashToken(string refrashToken)
+     public async Task<GenericResponse<string>> GenerateAccessTokenAsync(string refrashToken)
      {
-         throw new NotImplementedException();
+         var data = await _refreshesRepository.Where(x => x.Token == refrashToken).SingleOrDefaultAsync();
+         if (data == null)
+            return GenericResponse<string>.Fail("Refresh token not found.");
+             
+         if (data.IsRevoked || data.ExpiryDate < DateTime.Now)
+             return GenericResponse<string>.Fail("Refresh token is revoke or expired.");
+         
+         var jwt = new GenerateJwtDto
+         {
+             Email = data.User.Email,
+             Id = data.User.Id,
+         };
+         
+         var accessToken = _tokenService.GenerateAccessToken(jwt);
+         return GenericResponse<string>.Ok(accessToken);
+     }
+
+     public async Task<GenericResponse<bool>> SignOutAsync(string refreshToken)
+     {
+         var data = await _refreshesRepository.Where(x => x.Token == refreshToken).SingleOrDefaultAsync();
+         if (data == null)
+             return GenericResponse<bool>.Fail("Refresh token not found.");
+         
+         data.IsRevoked = true;
+         
+         _refreshesRepository.Update(data);
+         return GenericResponse<bool>.Ok(true);
      }
 }
