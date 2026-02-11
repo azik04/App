@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.Configuration.List;
 
-public class ServiceConfiguration : IEntityTypeConfiguration<Services>
+public class ServiceConfiguration : IEntityTypeConfiguration<Domain.Entities.List.Services>
 {
-    public void Configure(EntityTypeBuilder<Services> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.List.Services> builder)
     {
         builder.HasKey(x => x.Id);
     }

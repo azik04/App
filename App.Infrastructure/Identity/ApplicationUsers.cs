@@ -9,4 +9,5 @@ public class ApplicationUsers : IdentityUser
     public Clients? Client { get; set; }
     public Guid? WorkerId { get; set; }
     public Workers? Worker { get; set; }
+    public List<Refreshes> Refreshes { get; set; } = new();
 }

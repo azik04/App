@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using App.Application.Interfaces;
+﻿using System.Linq.Expressions;
+using App.Application.Common.Interfaces;
 using App.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +38,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task InsertAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
     public T Update(T entity)
