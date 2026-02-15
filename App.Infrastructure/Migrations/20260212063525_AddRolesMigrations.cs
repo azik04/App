@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace App.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCore : Migration
+    public partial class AddRolesMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -157,12 +159,14 @@ namespace App.Infrastructure.Migrations
                         name: "FK_AspNetUsers_Client_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Client",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Worker_WorkerId",
                         column: x => x.WorkerId,
                         principalTable: "Worker",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -402,7 +406,7 @@ namespace App.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Refreshes",
+                name: "Refresh",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -413,13 +417,13 @@ namespace App.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Refreshes", x => x.Id);
+                    table.PrimaryKey("PK_Refresh", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Refreshes_AspNetUsers_UserId",
+                        name: "FK_Refresh_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -490,6 +494,16 @@ namespace App.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "a1234567-1111-1111-1111-111111111111", "d1111111-1111-1111-1111-111111111111", "Admin", "ADMIN" },
+                    { "a1234567-1111-1111-1111-111111111112", "d1111111-1111-1111-1111-111111111112", "Client", "CLIENT" },
+                    { "a1234567-1111-1111-1111-111111111113", "d1111111-1111-1111-1111-111111111113", "Worker", "WORKER" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -525,12 +539,16 @@ namespace App.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_ClientId",
                 table: "AspNetUsers",
-                column: "ClientId");
+                column: "ClientId",
+                unique: true,
+                filter: "[ClientId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_WorkerId",
                 table: "AspNetUsers",
-                column: "WorkerId");
+                column: "WorkerId",
+                unique: true,
+                filter: "[WorkerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -570,8 +588,8 @@ namespace App.Infrastructure.Migrations
                 column: "WorkerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Refreshes_UserId",
-                table: "Refreshes",
+                name: "IX_Refresh_UserId",
+                table: "Refresh",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -650,7 +668,7 @@ namespace App.Infrastructure.Migrations
                 name: "JobFiles");
 
             migrationBuilder.DropTable(
-                name: "Refreshes");
+                name: "Refresh");
 
             migrationBuilder.DropTable(
                 name: "ReviewFile");

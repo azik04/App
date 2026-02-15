@@ -1,4 +1,4 @@
-using App.Application.User.Command.GetAll;
+using App.Application.User.Query.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +12,7 @@ public class UserController : Controller
     public UserController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync(GetAllQuery query)
+    public async Task<IActionResult> GetAllAsync([FromQuery]GetAllUserQuery query)
     {
         var result = await _mediator.Send(query);
         return result.Success ? Ok(result) : BadRequest(result);

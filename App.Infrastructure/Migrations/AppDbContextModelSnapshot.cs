@@ -430,7 +430,9 @@ namespace App.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientId")
+                        .IsUnique()
+                        .HasFilter("[ClientId] IS NOT NULL");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -440,7 +442,9 @@ namespace App.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("WorkerId");
+                    b.HasIndex("WorkerId")
+                        .IsUnique()
+                        .HasFilter("[WorkerId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -469,7 +473,7 @@ namespace App.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Refreshes");
+                    b.ToTable("Refresh");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -497,6 +501,29 @@ namespace App.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "a1234567-1111-1111-1111-111111111111",
+                            ConcurrencyStamp = "d1111111-1111-1111-1111-111111111111",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "a1234567-1111-1111-1111-111111111112",
+                            ConcurrencyStamp = "d1111111-1111-1111-1111-111111111112",
+                            Name = "Client",
+                            NormalizedName = "CLIENT"
+                        },
+                        new
+                        {
+                            Id = "a1234567-1111-1111-1111-111111111113",
+                            ConcurrencyStamp = "d1111111-1111-1111-1111-111111111113",
+                            Name = "Worker",
+                            NormalizedName = "WORKER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -757,12 +784,14 @@ namespace App.Infrastructure.Migrations
             modelBuilder.Entity("App.Infrastructure.Identity.ApplicationUsers", b =>
                 {
                     b.HasOne("App.Domain.Entities.Acc.Clients", "Client")
-                        .WithMany()
-                        .HasForeignKey("ClientId");
+                        .WithOne()
+                        .HasForeignKey("App.Infrastructure.Identity.ApplicationUsers", "ClientId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("App.Domain.Entities.Acc.Workers", "Worker")
-                        .WithMany()
-                        .HasForeignKey("WorkerId");
+                        .WithOne()
+                        .HasForeignKey("App.Infrastructure.Identity.ApplicationUsers", "WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Client");
 
@@ -774,7 +803,7 @@ namespace App.Infrastructure.Migrations
                     b.HasOne("App.Infrastructure.Identity.ApplicationUsers", "User")
                         .WithMany("Refreshes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");

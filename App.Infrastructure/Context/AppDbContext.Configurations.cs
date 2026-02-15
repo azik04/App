@@ -12,7 +12,10 @@ public partial class AppDbContext
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfiguration(new ApplicationUserConfiguration());
         builder.ApplyConfiguration(new ClientConfiguration());
+        builder.ApplyConfiguration(new RefreshConfiguration());
+        builder.ApplyConfiguration(new RolesConfiguration());
         builder.ApplyConfiguration(new WorkerConfiguration());
 
         builder.ApplyConfiguration(new JobFileConfiguration());

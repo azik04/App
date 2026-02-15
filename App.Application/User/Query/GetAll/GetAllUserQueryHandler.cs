@@ -3,18 +3,18 @@ using App.Application.Common.Interfaces.Services;
 using App.Application.Common.Responses;
 using MediatR;
 
-namespace App.Application.User.Command.GetAll;
+namespace App.Application.User.Query.GetAll;
 
-public class GetAllQueryHandler : IRequestHandler<GetAllQuery, GenericResponse<List<GetAllUserDto>>>
+public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, GenericResponse<List<GetAllUserDto>>>
 {
     private readonly IUserService _userService;
 
-    public GetAllQueryHandler(IUserService userService)
+    public GetAllUserQueryHandler(IUserService userService)
     {
         _userService = userService;
     }
     
-    public async Task<GenericResponse<List<GetAllUserDto>>> Handle(GetAllQuery request, CancellationToken cancellationToken)
+    public async Task<GenericResponse<List<GetAllUserDto>>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Role))
             return GenericResponse<List<GetAllUserDto>>.Fail("No role provided");

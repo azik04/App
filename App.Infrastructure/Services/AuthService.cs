@@ -33,6 +33,9 @@ public class AuthService : IAuthService
         if (entity == null)
             return TokenResponse.Fail("User with this Email aint exist.");
 
+        if (!entity.EmailConfirmed)
+            return TokenResponse.Fail("Confirm your email");
+        
         var data = await _signInManager.CheckPasswordSignInAsync(entity, dto.Password, lockoutOnFailure: false);
         if (!data.Succeeded)
             return TokenResponse.Fail("Something went wrong.");
