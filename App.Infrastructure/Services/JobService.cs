@@ -1,10 +1,12 @@
 ﻿using App.Application.Common.DTO.Job;
 using App.Application.Common.Interfaces;
+using App.Application.Common.Interfaces.File;
 using App.Application.Common.Interfaces.Job;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
+using App.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +15,11 @@ namespace App.Infrastructure.Services;
 public class JobService : IJobService
 {
     private readonly IGenericRepository<Jobs> _jobRepository;
-    private readonly IGenericRepository<AppFiles> _appFileRepository;
-    public JobService(IGenericRepository<Jobs> jobRepository, IGenericRepository<AppFiles> appFileRepository)
+    private readonly IAppFileService _appFileService;
+    public JobService(IGenericRepository<Jobs> jobRepository, IAppFileService  appFileService)
     {
-        _appFileRepository = appFileRepository;
         _jobRepository = jobRepository;
     }
-
 
     public async Task<GenericResponse<bool>> CreateAsync(List<IFormFile> file, CreateJobDto dto)
     {
@@ -37,28 +37,43 @@ public class JobService : IJobService
 
         await _jobRepository.InsertAsync(data);
 
-        var directory = Path.Combine("wwwroot", "job");
-        if (!Directory.Exists(directory))
-            Directory.CreateDirectory(directory);
-            
-       foreach(var item in file)
-       {
-            var fileName = "Job" + data.Id + Path.GetExtension(item.Name);
-            var filePath = Path.Combine(directory, fileName);
-
-            using (var steam = new FileStream(filePath, FileMode.Create))
-                await item.CopyToAsync(steam);
-
-            var photo = new AppFiles
-            {
-                FilePath = filePath,
-                JobId = data.Id,
-            };
-
-            await _appFileRepository.InsertAsync(photo);
-       }
+        await _appFileService.CreateAsync(file , FileTypes.Job, data.Id);
 
         return GenericResponse<bool>.Ok(true);
+    }
+
+    public async Task<GenericResponse<List<GetAllJobDto>>> GetAllByWorkerHistoryAsync(Guid workerId)
+    {
+        var data = await _jobRepository.Where(x => x.WorkerId == workerId && x.StatusId == 3)
+            .Include(x => x.Worker)
+            .Include(x => x.Client)
+            .Include(x => x.Address)
+            .Include(x => x.Statuse)
+            .Include(x => x.Service)
+            .Include(x => x.JobFile)
+            .Select(item => new GetAllJobDto
+            {
+                AddressId = item.AddressId,
+                AdressName = item.Address.Name,
+                X = item.Address.X,
+                Y = item.Address.Y,
+                Description = item.Description,
+                ClientId = item.ClientId,
+                ClientName = item.Client.Name + " " + item.Client.Surname,
+                WorkerId = item.WorkerId,
+                WorkerName = item.Worker.Name + " " + item.Worker.Surname,
+                WorkerRating = item.Worker.Rating,
+                ServiceId = item.ServiceId,
+                ServiceName = item.Service.Name,
+                isActive = item.isActive,
+                isHandled = item.isHandled,
+                Name = item.Name,
+                StatusId = item.StatusId,
+                StatusName = item.Statuse.Name,
+                AppFile = item.JobFile.Select(ph => ph.FilePath).ToList()
+            }).ToListAsync();
+
+        return GenericResponse<List<GetAllJobDto>>.Ok(data);
     }
 
     public async Task<GenericResponse<List<GetAllJobDto>>> GetAllByClientAsync(Guid clientId)
@@ -97,7 +112,7 @@ public class JobService : IJobService
 
     public async Task<GenericResponse<List<GetAllJobDto>>> GetAllByWorkerAsync(int serviceId)
     {
-        var data = await _jobRepository.Where(x => x.ServiceId == serviceId)
+        var data = await _jobRepository.Where(x => x.ServiceId == serviceId && x.StatusId == 1)
                     .Include(x => x.Worker)
                     .Include(x => x.Client)
                     .Include(x => x.Address)
@@ -158,16 +173,44 @@ public class JobService : IJobService
         return GenericResponse<GetByIdJobDto>.Ok(dto);
     }
 
-    public async Task<GenericResponse<bool>> HandleAsync(Guid id, Guid workerId)
+    public async Task<GenericResponse<bool>> SubmitAsync(Guid id, Guid workerId)
     {
         var item = await _jobRepository.GetByIdAsync(id);
         if (item == null)
             return GenericResponse<bool>.Fail();
+        
+        item.isActive = true;
+        item.StatusId = 3;
+        
+        _jobRepository.Update(item);
 
-        item.StatusId = 2;
-        item.WorkerId = workerId;
-        item.isHandled = true;
+        return GenericResponse<bool>.Ok(true);
+    }
 
+    public async Task<GenericResponse<bool>> HandleAsync(Guid id, Guid workerId, Guid? clientId)
+    {
+        var item = await _jobRepository.GetByIdAsync(id);
+        if (item == null)
+            return GenericResponse<bool>.Fail();
+        
+        switch (item.isHandled)
+        {
+            case false:
+                item.StatusId = 2;
+                item.WorkerId = workerId;
+                item.isHandled = true;
+                break;
+            
+            case true:
+                if (item.ClientId != clientId)
+                    return GenericResponse<bool>.Fail();
+                    
+                item.StatusId = 1;
+                item.WorkerId = null;
+                item.isHandled = false;
+                break;
+        }
+        
         _jobRepository.Update(item);
 
         return GenericResponse<bool>.Ok(true);
@@ -180,21 +223,6 @@ public class JobService : IJobService
             return GenericResponse<bool>.Fail();
 
         _jobRepository.Delete(item);
-
-        return GenericResponse<bool>.Ok(true);
-    }
-
-    public async Task<GenericResponse<bool>> UnhandleAsync(Guid id, Guid clientId)
-    {
-        var item = await _jobRepository.GetByIdAsync(id);
-        if (item.ClientId != clientId || item == null)
-            return GenericResponse<bool>.Fail();
-
-        item.StatusId = 1;
-        item.WorkerId = null;
-        item.isHandled = false;
-
-        _jobRepository.Update(item);
 
         return GenericResponse<bool>.Ok(true);
     }

@@ -10,7 +10,6 @@ public class Reviews
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Description { get; set; }
     public Guid ClientId { get; set; }
     public Clients Client { get; set; }
     public Guid WorkerId { get; set; }
