@@ -1,4 +1,5 @@
-﻿using App.Domain.Entities.Main;
+﻿using App.Domain.Entities.List;
+using App.Domain.Entities.Main;
 
 namespace App.Domain.Entities.Acc;
 
@@ -10,4 +11,5 @@ public class Clients
     public List<Jobs> Job { get; set; }
     public List<Reviews> Review { get; set; }
     public List<Sms> Sms { get; set; }
+    public List<Addresses> Adresses { get; set; }
 }

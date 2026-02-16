@@ -2,7 +2,7 @@
 
 namespace App.Domain.Entities.List;
 
-public class JobFiles
+public class AppFiles
 {
     public int Id { get; set; }
     public string FilePath { get; set; }

@@ -1,4 +1,4 @@
-using App.Application.Common.Interfaces.Services;
+using App.Application.Common.Interfaces.Auth;
 using App.Application.Common.Responses;
 using MediatR;
 

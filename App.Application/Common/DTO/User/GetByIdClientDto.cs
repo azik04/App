@@ -1,11 +1,12 @@
-﻿using App.Domain.Entities.List;
+﻿using App.Application.Common.DTO.Address;
 
 namespace App.Application.Common.DTO.User;
 
-public class GetAllUserDto
+public class GetByIdClientDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
+    public List<GetAllAddressDto> Address { get; set; }
 }

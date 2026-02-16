@@ -13,10 +13,12 @@ public class Jobs
     public Guid? WorkerId { get; set; }
     public Workers? Worker { get; set; }
     public bool isHandled { get; set; }
+    public int AddressId { get; set; }
+    public Addresses Address { get; set; }
     public int ServiceId { get; set; } 
     public Services Service { get; set; }
     public int StatusId { get; set; }
     public Statuses Statuse { get; set; }
     public bool isActive { get; set; } 
-    public List<JobFiles> JobFile { get; set; } 
+    public List<AppFiles> JobFile { get; set; } 
 }

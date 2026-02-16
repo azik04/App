@@ -2,7 +2,7 @@
 using App.Application.Common.Responses;
 using App.Application.Common.Responses.Base;
 
-namespace App.Application.Common.Interfaces.Services;
+namespace App.Application.Common.Interfaces.Auth;
 
 public interface IAuthService
 {

@@ -19,6 +19,7 @@ public partial class AppDbContext
         builder.ApplyConfiguration(new WorkerConfiguration());
 
         builder.ApplyConfiguration(new JobFileConfiguration());
+        builder.ApplyConfiguration(new AddressConfiguration());
         builder.ApplyConfiguration(new ReviewFileConfiguration());
         builder.ApplyConfiguration(new ServiceConfiguration());
         builder.ApplyConfiguration(new SmsTypeConfiguration());

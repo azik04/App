@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace App.Infrastructure.Configuration.List;
 
-public class JobFileConfiguration : IEntityTypeConfiguration<JobFiles>
+public class JobFileConfiguration : IEntityTypeConfiguration<AppFiles>
 {
-    public void Configure(EntityTypeBuilder<JobFiles> builder)
+    public void Configure(EntityTypeBuilder<AppFiles> builder)
     {
         builder.HasKey(x => x.Id);
 

@@ -1,8 +1,12 @@
 using App.Application.Account.Command.Confirm;
 using App.Application.Common.Interfaces;
+using App.Application.Common.Interfaces.Account;
+using App.Application.Common.Interfaces.Auth;
 using App.Application.Common.Interfaces.Helpers;
 using App.Application.Common.Interfaces.Integrations;
 using App.Application.Common.Interfaces.Services;
+using App.Application.Common.Interfaces.User;
+using App.Application.Common.Interfaces.WorkerService;
 using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Rel;

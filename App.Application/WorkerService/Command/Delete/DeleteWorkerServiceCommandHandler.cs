@@ -1,4 +1,4 @@
-﻿using App.Application.Common.Interfaces.Services;
+﻿using App.Application.Common.Interfaces.WorkerService;
 using App.Application.Common.Responses;
 using MediatR;
 

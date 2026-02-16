@@ -1,5 +1,5 @@
 ﻿using App.Application.Common.DTO.Account;
-using App.Application.Common.Interfaces.Services;
+using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
 using MediatR;
 

@@ -1,8 +1,8 @@
 ﻿using App.Application.Common.DTO.Auth;
 using App.Application.Common.DTO.Jwt;
 using App.Application.Common.Interfaces;
+using App.Application.Common.Interfaces.Auth;
 using App.Application.Common.Interfaces.Helpers;
-using App.Application.Common.Interfaces.Services;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using App.Infrastructure.Identity;

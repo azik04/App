@@ -1,7 +1,7 @@
 ﻿using App.Application.Common.DTO.WorkerService;
 using App.Application.Common.Responses;
 
-namespace App.Application.Common.Interfaces.Services;
+namespace App.Application.Common.Interfaces.WorkerService;
 
 public interface IWorkerServiceService
 {

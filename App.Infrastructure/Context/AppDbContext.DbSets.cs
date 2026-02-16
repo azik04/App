@@ -13,7 +13,8 @@ public partial class AppDbContext
     public DbSet<Workers> Worker { get; set; }
     public DbSet<Refreshes> Refresh { get; set; }
 
-    public DbSet<JobFiles> JobFiles { get; set; }
+    public DbSet<AppFiles> JobFiles { get; set; }
+    public DbSet<Addresses> Address { get; set; }
     public DbSet<ReviewFiles> ReviewFile { get; set; }
     public DbSet<Domain.Entities.List.Services> Service { get; set; }
     public DbSet<SmsTypes> SmsType { get; set; }

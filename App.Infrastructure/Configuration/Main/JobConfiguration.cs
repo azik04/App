@@ -17,5 +17,6 @@ public class JobConfiguration : IEntityTypeConfiguration<Jobs>
         builder.HasOne(x => x.Service).WithMany(x => x.Job).HasForeignKey(x => x.ServiceId).OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(x => x.Statuse).WithMany(x => x.Job).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Address).WithMany(x => x.Job).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
     }
 }

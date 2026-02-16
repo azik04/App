@@ -1,6 +1,6 @@
 ﻿using App.Application.Common.DTO.WorkerService;
 using App.Application.Common.Interfaces;
-using App.Application.Common.Interfaces.Services;
+using App.Application.Common.Interfaces.WorkerService;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Rel;
 using App.Infrastructure.Identity;
