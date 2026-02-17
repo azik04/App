@@ -8,11 +8,8 @@ namespace App.Application.User.Query.GetAll;
 public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, GenericResponse<List<GetAllUserDto>>>
 {
     private readonly IUserService _userService;
-
-    public GetAllUserQueryHandler(IUserService userService)
-    {
-        _userService = userService;
-    }
+    public GetAllUserQueryHandler(IUserService userService) => _userService = userService;
+    
     
     public async Task<GenericResponse<List<GetAllUserDto>>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
     {
