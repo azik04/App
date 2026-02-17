@@ -13,9 +13,9 @@ public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, GenericRe
     
     public async Task<GenericResponse<List<GetAllUserDto>>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.Role))
+        if (string.IsNullOrWhiteSpace(request.role))
             return GenericResponse<List<GetAllUserDto>>.Fail("No role provided");
         
-        return await _userService.GetAllUsersAsync(request.Role);
+        return await _userService.GetAllUsersAsync(request.role);
     }
 }

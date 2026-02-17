@@ -1,12 +1,17 @@
-﻿using App.Application.Common.Responses;
+﻿using App.Application.Common.Interfaces.Address;
+using App.Application.Common.Responses;
 using MediatR;
 
 namespace App.Application.Address.Command.Create;
 
 public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand, GenericResponse<bool>>
 {
-    public Task<GenericResponse<bool>> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
+    private readonly IAddressService _addressService;
+    public CreateAddressCommandHandler(IAddressService addressService) => _addressService = addressService;
+    
+    
+    public async Task<GenericResponse<bool>> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _addressService.CreateAsync(request.dto);
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class WorkerServiceController : ControllerBase
 {
@@ -23,8 +23,8 @@ public class WorkerServiceController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveAll([FromQuery] DeleteWorkerServiceCommand command)
+    [HttpDelete("id/{id}")]
+    public async Task<IActionResult> RemoveAll([FromRoute] DeleteWorkerServiceCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);

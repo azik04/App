@@ -4,4 +4,4 @@ using MediatR;
 
 namespace App.Application.Job.Query.GetById;
 
-public record GetByIdQuery(Guid id) : IRequest<GenericResponse<GetByIdJobDto>>;
+public record GetByIdJobQuery(Guid id) : IRequest<GenericResponse<GetByIdJobDto>>;

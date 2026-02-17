@@ -11,8 +11,14 @@ public class UserController : Controller
     private readonly IMediator _mediator;
     public UserController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromQuery]GetAllUserQuery query)
+    
+    /// <summary>
+    /// Получить всех пользователей по роли
+    /// </summary>
+    /// <param name="role">Роль пользователя</param>
+    /// <returns>Список пользователей</returns>
+    [HttpGet("role")]
+    public async Task<IActionResult> GetAllAsync([FromQuery] GetAllUserQuery query)
     {
         var result = await _mediator.Send(query);
         return result.Success ? Ok(result) : BadRequest(result);

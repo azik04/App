@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("access-token")]
-    public async Task<IActionResult> GenerateAccessTokenAsync([FromQuery]GenerateAccessTokenCommand command)
+    public async Task<IActionResult> GenerateAccessTokenAsync([FromQuery] GenerateAccessTokenCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);

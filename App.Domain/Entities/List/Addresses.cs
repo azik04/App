@@ -9,6 +9,7 @@ namespace App.Domain.Entities.List
         public string X { get; set; }
         public string Y { get; set; }
         public string? Address { get; set; }
+        public bool isAcrive { get; set; } = false;
         public Guid ClientId { get; set; }
         public List<Jobs> Job { get; set; }
     }

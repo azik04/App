@@ -1,13 +1,12 @@
 ﻿using App.Application.Services.Command.Create;
 using App.Application.Services.Command.Delete;
 using App.Application.Services.Query.GetAll;
-using App.Application.User.Query.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 [ApiController]
 public class ServiceController : ControllerBase
 {
@@ -22,14 +21,14 @@ public class ServiceController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromRoute] GetAllServiceQuery query)
+    public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(new GetAllServiceQuery());
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveAll([FromQuery] DeleteServiceCommand command)
+    [HttpDelete("id/{id}")]
+    public async Task<IActionResult> RemoveAll([FromRoute] DeleteServiceCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
