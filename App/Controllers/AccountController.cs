@@ -4,12 +4,14 @@ using App.Application.Account.Command.Reset;
 using App.Application.Account.Command.SentConfirm;
 using App.Application.Account.Command.SentReset;
 using App.Application.Account.Command.SignUp;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class AccountController : ControllerBase
 {

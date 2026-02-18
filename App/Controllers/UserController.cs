@@ -1,10 +1,12 @@
 using App.Application.User.Query.GetAll;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class UserController : Controller
 {

@@ -1,12 +1,14 @@
 ﻿using App.Application.Auth.Command.GenerateAccessToken;
 using App.Application.Auth.Command.SignIn;
 using App.Application.Auth.Command.SignOut;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {

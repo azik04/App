@@ -4,13 +4,15 @@ using App.Application.Job.Command.Handle;
 using App.Application.Job.Query.GetAllByClient;
 using App.Application.Job.Query.GetAllByWorkerHistory;
 using App.Application.Job.Query.GetById;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[Route("api/v1/[controller]")]
 public class JobController : ControllerBase
 {
     private readonly IMediator _mediator;

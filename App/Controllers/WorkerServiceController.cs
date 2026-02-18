@@ -1,15 +1,13 @@
-﻿using App.Application.Services.Command.Create;
-using App.Application.Services.Command.Delete;
-using App.Application.Services.Query.GetAll;
-using App.Application.WorkerService.Command.Create;
+﻿using App.Application.WorkerService.Command.Create;
 using App.Application.WorkerService.Command.Delete;
+using Asp.Versioning;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[Route("api/v1/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
 public class WorkerServiceController : ControllerBase
 {

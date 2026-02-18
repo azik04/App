@@ -3,13 +3,15 @@ using App.Application.Address.Command.Delate;
 using App.Application.Address.Command.Update;
 using App.Application.Address.Query.GetAll;
 using App.Application.Address.Query.GetById;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[Route("api/v1/[controller]")]
 public class AddressController : Controller
 {
     private readonly IMediator _mediator;

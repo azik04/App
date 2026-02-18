@@ -1,12 +1,15 @@
 using App.Application.Reviews.Command.Create;
 using App.Application.Reviews.Query.GetAll;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
+
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[Route("api/v1/[controller]")]
 public class ReviewController : ControllerBase
 {
     private readonly IMediator _mediator;
