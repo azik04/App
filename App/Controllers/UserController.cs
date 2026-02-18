@@ -11,12 +11,12 @@ public class UserController : Controller
     private readonly IMediator _mediator;
     public UserController(IMediator mediator) => _mediator = mediator;
 
-    
+
     /// <summary>
-    /// Получить всех пользователей по роли
+    /// Retrieves address with a specific role.
     /// </summary>
-    /// <param name="role">Роль пользователя</param>
-    /// <returns>Список пользователей</returns>
+    /// <param name="role">Consume a user role.</param>
+    /// <returns>Returns a list of users for the specified role.</returns>
     [HttpGet("role")]
     public async Task<IActionResult> GetAllAsync([FromQuery] GetAllUserQuery query)
     {

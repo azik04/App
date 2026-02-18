@@ -16,36 +16,65 @@ public class AddressController : Controller
     public AddressController(IMediator mediator) => _mediator = mediator;
 
 
+    /// <summary>
+    /// Create a new address for a specific client.
+    /// </summary>
+    /// <param name="command">Contains address creating data.</param>
+    /// <returns>Returns create adress result</returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateAddressCommand command)
     {
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
+
+
+    /// <summary>
+    /// Retrieves all addresses associated with a specific worker.
+    /// </summary>
+    /// <param name="command">Contains the worker identifier.</param>
+    /// <returns>Returns a list of addresses for the specified worker.</returns>
     [HttpGet("worker/{workerId}")]
     public async Task<IActionResult> GetAllAsync([FromRoute] GetAllAddressQuery command)
     {
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
+
+
+    /// <summary>
+    /// Retrieves address with a specific identifier.
+    /// </summary>
+    /// <param name="command">Contains the address identifier.</param>
+    /// <returns>Returns address with a specific identifier.</returns>
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdAddressQuery command)
     {
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
-    [HttpPut]
-    public async Task<IActionResult> UpdateAsunc([FromBody] UpdateAddressCommand command)
+
+
+    /// <summary>
+    /// Remove an existin address with a specific identifier.
+    /// </summary>
+    /// <param name="command">Contains the address identifier.</param>
+    /// <returns>Returns remove adress result</returns>
+    [HttpDelete("id/{id}")]
+    public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
     {
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
-    [HttpDelete("id/{id}")]
-    public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
+
+
+    /// <summary>
+    /// Update an existin address with a specific identifier.
+    /// </summary>
+    /// <param name="command">Contains the address updating data.</param>
+    /// <returns>Returns update adress result</returns>
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsunc([FromBody] UpdateAddressCommand command)
     {
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);

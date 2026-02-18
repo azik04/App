@@ -16,6 +16,12 @@ public class WorkerServiceController : ControllerBase
     private readonly IMediator _mediator;
     public WorkerServiceController(IMediator mediator) => _mediator = mediator;
 
+
+    /// <summary>
+    /// Create new service for specific worker.
+    /// </summary>
+    /// <param name="command">Consumes userId and serviceId.</param>
+    /// <returns>Create service for a user result.</returns>
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateWorkerServiceCommand command)
     {
@@ -23,6 +29,12 @@ public class WorkerServiceController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
+
+    /// <summary>
+    /// Remove a worker's service with a specific identifier.
+    /// </summary>
+    /// <param name="command">Consumes a worker's service identifier.</param>
+    /// <returns>Remove service for a user result.</returns>
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAll([FromRoute] DeleteWorkerServiceCommand command)
     {
