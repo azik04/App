@@ -37,15 +37,10 @@ public static class ServiceDependency
         
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IAddressService, AddressService>();
         services.AddScoped<ITokenHelper, TokenHelper>();
         services.AddScoped<IAppFileService, AppFileService>();
-        services.AddScoped<IJobService, JobService>();
-        services.AddScoped<IReviewService, ReviewService>();
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IServiceService, ServiceService>();
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IWorkerServiceService, WorkerServiceService>();
 
         services.AddScoped<IGenericRepository<Refreshes>, GenericRepository<Refreshes>>();
         services.AddScoped<IGenericRepository<Clients>, GenericRepository<Clients>>();

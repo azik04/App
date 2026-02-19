@@ -4,4 +4,5 @@ using MediatR;
 
 namespace App.Application.Address.Command.Create;
 
-public sealed record class CreateAddressCommand(CreateAddressDto dto) : IRequest<GenericResponse<bool>>;
+public sealed record CreateAddressCommand (string Name, string X, string Y, string? Address, Guid ClientId) 
+    : IRequest<GenericResponse<bool>>;

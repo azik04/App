@@ -4,5 +4,4 @@ using MediatR;
 
 namespace App.Application.Account.Command.SignUp;
 
-public sealed record SignUpCommand(CreateIdentityDto Dto) : IRequest<GenericResponse<bool>>;
-
+public class SignUpCommand : CreateIdentityDto, IRequest<GenericResponse<bool>>;

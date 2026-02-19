@@ -4,4 +4,4 @@ using MediatR;
 
 namespace App.Application.Services.Command.Create;
 
-public sealed record class CreateServiceCommand(CreateServiceDto dto) : IRequest<GenericResponse<bool>>;
+public sealed record class CreateServiceCommand(string Name) : IRequest<GenericResponse<bool>>;

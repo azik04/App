@@ -21,7 +21,7 @@ public class WorkerServiceController : ControllerBase
     /// <param name="command">Consumes userId and serviceId.</param>
     /// <returns>Create service for a user result.</returns>
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreateWorkerServiceCommand command)
+    public async Task<IActionResult> CreateAsync(CreateWorkerServiceCommand command )
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);

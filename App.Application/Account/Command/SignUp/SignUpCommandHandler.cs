@@ -16,6 +16,6 @@ public class SignUpCommandHandler : IRequestHandler<SignUpCommand, GenericRespon
 
     public async Task<GenericResponse<bool>> Handle(SignUpCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.SignUpAsync(request.Dto);
+        return await _accountService.SignUpAsync(request);
     }
 }

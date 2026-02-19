@@ -27,8 +27,6 @@ public static class SwaggerConfigurations
             {
                 
             });
-
-            opt.DocumentFilter<RemoveAllSchemas>();
         });
         
         services.AddApiVersioning(opt =>

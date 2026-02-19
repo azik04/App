@@ -75,9 +75,17 @@ public class AddressController : Controller
     /// </summary>
     /// <param name="command">Contains the address updating data.</param>
     /// <returns>Returns update adress result</returns>
-    [HttpPut]
-    public async Task<IActionResult> UpdateAsunc([FromBody] UpdateAddressCommand command)
+    [HttpPut("id/{id}")]
+    public async Task<IActionResult> UpdateAsunc([FromRoute]int id, [FromBody] UpdateAddressRequest request)
     {
+        var command = new UpdateAddressCommand(
+            id,
+            request.Name,
+            request.X,
+            request.Y,
+            request.Address
+        );
+
         var res = await _mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
