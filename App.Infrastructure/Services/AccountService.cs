@@ -6,24 +6,22 @@ using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using App.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Services;
 
 public class AccountService : IAccountService
 {
     private readonly UserManager<ApplicationUsers> _userManager;
-    private readonly SignInManager<ApplicationUsers> _signInManager;
     private readonly IGenericRepository<Clients> _clientRep;
-    private readonly IGenericRepository<Workers> _workerRep;
     private readonly IEmailService _emailService;
-    public AccountService(UserManager<ApplicationUsers> userManager, SignInManager<ApplicationUsers> signInManager,
-        IGenericRepository<Clients> clientRep, IGenericRepository<Workers> workerRep, IEmailService emailService)
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    public AccountService(UserManager<ApplicationUsers> userManager, IGenericRepository<Clients> clientRep, IEmailService emailService)
     {
         _emailService = emailService;
         _userManager = userManager;
-        _signInManager = signInManager;
         _clientRep = clientRep;
-        _workerRep = workerRep;
     }
 
     public async Task<GenericResponse<bool>> SignUpAsync(CreateIdentityDto dto)

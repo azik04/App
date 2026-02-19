@@ -10,6 +10,7 @@ public class Workers
     public string Surname { get; private set; }
     public decimal Rating { get; private set; } = 0;
     public string? FilePath { get; private set; }
+    public bool isActive { get; private set; } = false;
     public List<Jobs> Job { get; set; }
     public List<Reviews> Review { get; set; }
     public List<Payments> Payment { get; set; }

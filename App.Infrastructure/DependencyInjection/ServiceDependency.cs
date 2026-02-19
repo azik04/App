@@ -1,15 +1,9 @@
 using App.Application.Common.Interfaces;
 using App.Application.Common.Interfaces.Account;
-using App.Application.Common.Interfaces.Address;
 using App.Application.Common.Interfaces.Auth;
 using App.Application.Common.Interfaces.File;
 using App.Application.Common.Interfaces.Helpers;
 using App.Application.Common.Interfaces.Integrations;
-using App.Application.Common.Interfaces.Job;
-using App.Application.Common.Interfaces.Reviews;
-using App.Application.Common.Interfaces.Services;
-using App.Application.Common.Interfaces.User;
-using App.Application.Common.Interfaces.WorkerService;
 using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
@@ -39,7 +33,6 @@ public static class ServiceDependency
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenHelper, TokenHelper>();
         services.AddScoped<IAppFileService, AppFileService>();
-        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IEmailService, EmailService>();
 
         services.AddScoped<IGenericRepository<Refreshes>, GenericRepository<Refreshes>>();

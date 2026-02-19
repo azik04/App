@@ -16,4 +16,20 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Account\Query\GetAll\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Client\QUERY\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Client\QUERY\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Client\QUERY\**" />
+  </ItemGroup>
+
 </Project>

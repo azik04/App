@@ -34,11 +34,11 @@ public class AuthService : IAuthService
             return TokenResponse.Fail("User with this Email aint exist.");
 
         if (!entity.EmailConfirmed)
-            return TokenResponse.Fail("Confirm your email");
+            return TokenResponse.Fail("Confirm your email.");
         
         var data = await _signInManager.CheckPasswordSignInAsync(entity, dto.Password, lockoutOnFailure: false);
         if (!data.Succeeded)
-            return TokenResponse.Fail("Something went wrong.");
+            return TokenResponse.Fail("Password or Email is wrong.");
 
         var jwt = new GenerateJwtDto
         {
