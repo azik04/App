@@ -1,14 +1,14 @@
 using App.Application.Client.Query.GetAll;
-using App.Application.Client.Query.GetById;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using App.Application.Client.Query.GetById;
 
 namespace App.Controllers;
 
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-[ApiVersion("1.O")]
-[Route("api/v{version:apiVersion}/Client")]
 public class ClientController  : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -24,8 +24,12 @@ public class ClientController  : ControllerBase
         var res = await _mediator.Send(new GetAllClientQuery());
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
-    
+
+    /// <summary>
+    /// Retrieves client by its identifier
+    /// </summary>
+    /// <param name="query">Contains the client identifier</param>
+    /// <returns>Returns the client details if found.</returns>
     [HttpGet("id/{id}")] 
     public async Task<IActionResult> GetByIdAsync([FromRoute]GetByIdClientQuery query)
     {

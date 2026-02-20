@@ -1,4 +1,5 @@
-﻿using App.Application.Common.Interfaces.Account;
+﻿using App.Application.Common.DTO.Account;
+using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
 using MediatR;
 
@@ -14,6 +15,13 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
 
     public async Task<GenericResponse<bool>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.ChangePasswordAsync(request.userId, request.dto);
+        var dto = new ChangePasswordDto()
+        {
+            confirmNewPassword = request.confirmNewPassword,
+            newPassword = request.newPassword,
+            oldPassword = request.newPassword
+        };
+
+        return await _accountService.ChangePasswordAsync(request.userId, dto);
     }
 }

@@ -17,19 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Account\Query\GetAll\" />
+    <Compile Remove="Account\Query\**" />
+    <Compile Remove="Новая папка\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Client\QUERY\**" />
+    <EmbeddedResource Remove="Account\Query\**" />
+    <EmbeddedResource Remove="Новая папка\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="Client\QUERY\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Client\QUERY\**" />
+    <None Remove="Account\Query\**" />
+    <None Remove="Новая папка\**" />
   </ItemGroup>
 
 </Project>

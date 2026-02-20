@@ -51,9 +51,9 @@ public class AccountController : ControllerBase
     /// <param name="command">Contains user's email address.</param>
     /// <returns>Returns email sending result.</returns>
     [HttpGet("send-reset/{email}")]
-    public async Task<IActionResult> SentResetPassword([FromRoute] SendResetCommand command)
+    public async Task<IActionResult> SentResetPassword([FromRoute] string email)
     {
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(new SendResetCommand(email));
         return result.Success ? Ok(result) : BadRequest(result);
     }
 

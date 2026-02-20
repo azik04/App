@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260212063525_AddRolesMigrations")]
-    partial class AddRolesMigrations
+    [Migration("20260220115629_SecondCore")]
+    partial class SecondCore
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,6 @@ namespace App.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -65,12 +64,51 @@ namespace App.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Worker");
                 });
 
-            modelBuilder.Entity("App.Domain.Entities.List.JobFiles", b =>
+            modelBuilder.Entity("App.Domain.Entities.List.Addresses", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("X")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Y")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isAcrive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.List.AppFiles", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -196,6 +234,9 @@ namespace App.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
@@ -268,10 +309,6 @@ namespace App.Infrastructure.Migrations
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -635,7 +672,18 @@ namespace App.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("App.Domain.Entities.List.JobFiles", b =>
+            modelBuilder.Entity("App.Domain.Entities.List.Addresses", b =>
+                {
+                    b.HasOne("App.Domain.Entities.Acc.Clients", "Client")
+                        .WithMany("Adresses")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.List.AppFiles", b =>
                 {
                     b.HasOne("App.Domain.Entities.Main.Jobs", "Job")
                         .WithMany("JobFile")
@@ -671,6 +719,12 @@ namespace App.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("App.Domain.Entities.List.Addresses", "Address")
+                        .WithMany("Job")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.Entities.List.Statuses", "Statuse")
                         .WithMany("Job")
                         .HasForeignKey("StatusId")
@@ -681,6 +735,8 @@ namespace App.Infrastructure.Migrations
                         .WithMany("Job")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Address");
 
                     b.Navigation("Client");
 
@@ -865,6 +921,8 @@ namespace App.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Domain.Entities.Acc.Clients", b =>
                 {
+                    b.Navigation("Adresses");
+
                     b.Navigation("Job");
 
                     b.Navigation("Review");
@@ -885,6 +943,11 @@ namespace App.Infrastructure.Migrations
                     b.Navigation("Subscription");
 
                     b.Navigation("WorkerService");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.List.Addresses", b =>
+                {
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.List.Services", b =>

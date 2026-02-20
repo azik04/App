@@ -19,7 +19,9 @@ public class GetByIdWorkerQueryHandler : IRequestHandler<GetByIdWorkerQuery, Gen
         var data = await _workersRepository.Where(x => x.Id == request.id)
             .Include(x => x.Review)
             .Include(x => x.WorkerService)
+                .ThenInclude(x => x.Service)
             .Include(x => x.Payment)
+            .Include(x => x.Job)
             .SingleOrDefaultAsync();
 
         var dto = new GetByIdWorkerDto()

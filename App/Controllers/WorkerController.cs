@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
 
-[ApiController]
 [ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/Client")]
+[ApiController]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class WorkerController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -24,14 +24,14 @@ public class WorkerController : ControllerBase
         var res = await _mediator.Send(new GetAllWorkerQuery());
         return res.Success ? Ok(res) : BadRequest(res);
     }
-    
-    
+
+
     /// <summary>
     /// Retrieves worker by its identifier
     /// </summary>
     /// <param name="query">Contains the worker identifier</param>
     /// <returns>Returns the worker details if found.</returns>
-    [HttpGet("id/{id}")] 
+    [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdWorkerQuery query)
     {
         var res = await _mediator.Send(query);

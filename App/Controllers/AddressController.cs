@@ -36,7 +36,7 @@ public class AddressController : Controller
     /// </summary>
     /// <param name="command">Contains the worker identifier.</param>
     /// <returns>Returns a list of addresses for the specified worker.</returns>
-    [HttpGet("worker/{workerId}")]
+    [HttpGet("client/{clientId}")]
     public async Task<IActionResult> GetAllAsync([FromRoute] GetAllAddressQuery command)
     {
         var res = await _mediator.Send(command);

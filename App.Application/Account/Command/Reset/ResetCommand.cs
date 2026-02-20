@@ -4,5 +4,5 @@ using MediatR;
 
 namespace App.Application.Account.Command.Reset;
 
-public sealed record ResetCommand(string Email, string Token, ResetPasswordDto Dto) : IRequest<GenericResponse<bool>>;
+public sealed record ResetCommand(string Email, string Token, string NewPassword, string ConfirmNewPassword) : IRequest<GenericResponse<bool>>;
 

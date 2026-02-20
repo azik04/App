@@ -20,6 +20,7 @@ public class GetAllAddressQueryHandler : IRequestHandler<GetAllAddressQuery, Gen
         {
             Id = item.Id,
             Name = item.Name,
+            Address = item.Address
         }).ToList();
 
         return GenericResponse<List<GetAllAddressDto>>.Ok(data);

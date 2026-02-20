@@ -1,4 +1,5 @@
-﻿using App.Application.Common.Interfaces.Account;
+﻿using App.Application.Common.DTO.Account;
+using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
 using MediatR;
 
@@ -15,6 +16,12 @@ public class ResetCommandHandler : IRequestHandler<ResetCommand, GenericResponse
 
     public async Task<GenericResponse<bool>> Handle(ResetCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.ResetPasswordAsync(request.Email, request.Token, request.Dto);
+        var dto = new ResetPasswordDto()
+        {
+            confirmNewPassword = request.ConfirmNewPassword,
+            newPassword = request.NewPassword,
+        };
+
+        return await _accountService.ResetPasswordAsync(request.Email, request.Token, dto);
     }
 }

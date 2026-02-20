@@ -9,7 +9,6 @@ namespace App.Application.Worker.Query.GetAll;
 public class GetAllWorkerQueryHandler : IRequestHandler<GetAllWorkerQuery, GenericResponse<List<GetAllWorkerDto>>>
 {
     private readonly IGenericRepository<Workers> _workersRepository;
-
     public GetAllWorkerQueryHandler(IGenericRepository<Workers> workersRepository) => _workersRepository = workersRepository;
     
     

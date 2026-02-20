@@ -18,6 +18,7 @@ public class DeleteServiceCommandHandler : IRequestHandler<DeleteServiceCommand,
             return GenericResponse<bool>.Fail();
 
         _genericRepository.Delete(data);
+        
 
         return GenericResponse<bool>.Ok(true);
     }

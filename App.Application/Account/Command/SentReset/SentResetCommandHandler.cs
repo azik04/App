@@ -15,6 +15,6 @@ public class SentResetCommandHandler : IRequestHandler<SendResetCommand, Generic
 
     public async Task<GenericResponse<bool>> Handle(SendResetCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.SentResetMailAsync(request.Email);
+        return await _accountService.SentResetMailAsync(request.email);
     }
 }
