@@ -28,7 +28,7 @@ public class AuthService : IAuthService
     }
 
     public async Task<TokenResponse> SignInAsync(AuthDto dto)
-     {
+    {
         var entity = await _userManager.FindByEmailAsync(dto.Email);
         if (entity == null)
             return TokenResponse.Fail("User with this Email aint exist.");

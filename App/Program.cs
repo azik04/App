@@ -1,7 +1,9 @@
 using App.Application.Account.Command.SignUp;
 using App.Configurations;
 using App.Infrastructure.DependencyInjection;
+using App.Infrastructure.Hubs;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer(); 
 
 builder.Services.AddSwaggerConfig();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddDatabase(builder.Configuration);
 
@@ -21,6 +25,15 @@ builder.Services.AddMediatR(cfg =>
         typeof(Program).Assembly,
         typeof(SignUpCommandHandler).Assembly
     );
+});
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AppClient", policy =>
+            policy.WithOrigins("http://127.0.0.1:5500")
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 });
 
 builder.Services.ConfigureOptions<SwaggerOptionsConfigure>();
@@ -46,8 +59,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
+app.UseCors("AppClient");
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chat");
 
 app.Run();

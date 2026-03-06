@@ -24,7 +24,7 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <param name="command">Contains user registration data.</param>
     /// <returns>Returns result of the registration process.</returns>
-    [HttpPost("signup")]
+    [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp(SignUpCommand command)
     {
         var result = await _mediator.Send(command);

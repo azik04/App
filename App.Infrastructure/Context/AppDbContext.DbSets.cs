@@ -15,6 +15,7 @@ public partial class AppDbContext
 
     public DbSet<AppFiles> JobFiles { get; set; }
     public DbSet<Addresses> Address { get; set; }
+    public DbSet<Chats> Chat { get; set; }
     public DbSet<ReviewFiles> ReviewFile { get; set; }
     public DbSet<Domain.Entities.List.Services> Service { get; set; }
     public DbSet<SmsTypes> SmsType { get; set; }
