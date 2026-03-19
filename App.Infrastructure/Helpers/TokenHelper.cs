@@ -32,6 +32,7 @@ public class TokenHelper : ITokenHelper
             {
                 new Claim(ClaimTypes.NameIdentifier, dto.Id.ToString()),
                 new Claim(ClaimTypes.Email, dto.Email.ToString()),
+                new Claim("ClientId", dto.ClientId.ToString()),
             }),
             Expires = DateTime.Now.AddMinutes(_jwtSettings.ExpiryMinutes),
             SigningCredentials = creds,

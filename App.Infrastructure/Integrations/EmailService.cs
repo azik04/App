@@ -59,17 +59,19 @@ public class EmailService : IEmailService
         };
 
         var body = await File.ReadAllTextAsync(path);
+        var encodedToken = WebUtility.UrlEncode(token);
 
         switch (type)
         {
             case EmailTypes.ConfirmationMail:
+
                 body = body.Replace("{{CONFIRM_LINK}}",
-                    $"http://localhost:5221/api/v1/Account/confirm?userId={userId}&token={token}");
+                    $"http://localhost:3000/auth/confirm-email?userId={userId}&token={encodedToken}");
                 break;
 
             case EmailTypes.ResetPasswordMail:
                 body = body.Replace("{{RESET_LINK}}",
-                    $"http://localhost:5221/api/v1/Account/reset?userId={userId}&token={token}");
+                    $"http://localhost:3000/auth/reset-password?userId={userId}&token={encodedToken}");
                 break;
         }
 

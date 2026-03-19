@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using App.Domain.Entities.Acc;
+﻿using App.Domain.Entities.Acc;
 
 namespace App.Domain.Entities.Main;
 

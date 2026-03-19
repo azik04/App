@@ -30,6 +30,7 @@ public class AuthService : IAuthService
     public async Task<TokenResponse> SignInAsync(AuthDto dto)
     {
         var entity = await _userManager.FindByEmailAsync(dto.Email);
+
         if (entity == null)
             return TokenResponse.Fail("User with this Email aint exist.");
 
@@ -43,8 +44,9 @@ public class AuthService : IAuthService
         var jwt = new GenerateJwtDto
         {
             Email = entity.Email,
+            ClientId = entity?.ClientId,
             Id = entity.Id,
-        };
+        }; 
 
         var accessToken = _tokenService.GenerateAccessToken(jwt);
         var refreshToken = _tokenService.GenerateRefreshToken();

@@ -17,7 +17,7 @@ public class SwaggerOptionsConfigure : IConfigureOptions<SwaggerGenOptions>
         {
             options.SwaggerDoc(item.GroupName, new OpenApiInfo()
             {
-                Title = $"Web Api {item.ApiVersion}",
+                Title = $"Web System Api {item.ApiVersion}",
                 Version = item.ApiVersion.ToString(),
             });
         }

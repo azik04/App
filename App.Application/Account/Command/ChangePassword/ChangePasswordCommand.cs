@@ -4,5 +4,5 @@ using MediatR;
 
 namespace App.Application.Account.Command.ChangePassword;
 
-public sealed record ChangePasswordCommand(string userId, string oldPassword, string newPassword, 
+public sealed record ChangePasswordCommand(string userId, string oldPassword, string newPassword,
     string confirmNewPassword) : IRequest<GenericResponse<bool>>;

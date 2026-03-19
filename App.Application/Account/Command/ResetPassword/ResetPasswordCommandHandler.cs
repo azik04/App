@@ -3,18 +3,18 @@ using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
 using MediatR;
 
-namespace App.Application.Account.Command.Reset;
+namespace App.Application.Account.Command.ResetPassword;
 
-public class ResetCommandHandler : IRequestHandler<ResetCommand, GenericResponse<bool>>
+public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, GenericResponse<bool>>
 {
     private readonly IAccountService _accountService;
-    public ResetCommandHandler(IAccountService accountService)
+    public ResetPasswordCommandHandler(IAccountService accountService)
     {
         _accountService = accountService;
     }
 
 
-    public async Task<GenericResponse<bool>> Handle(ResetCommand request, CancellationToken cancellationToken)
+    public async Task<GenericResponse<bool>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         var dto = new ResetPasswordDto()
         {
@@ -22,6 +22,6 @@ public class ResetCommandHandler : IRequestHandler<ResetCommand, GenericResponse
             newPassword = request.NewPassword,
         };
 
-        return await _accountService.ResetPasswordAsync(request.Email, request.Token, dto);
+        return await _accountService.ResetPasswordAsync(request.UserId, request.Token, dto);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using App.Domain.Entities.Main;
 using App.Infrastructure.Context;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace App.Infrastructure.Hubs;
 
@@ -11,7 +12,6 @@ public class ChatHub : Hub
     {
         _db = db;
     }
-
 
     public async Task SendMessage(Guid receiverId, string message)
     {
@@ -29,6 +29,10 @@ public class ChatHub : Hub
         await _db.Chat.AddAsync(chat);
         await _db.SaveChangesAsync();
 
-        await Clients.User(receiverId.ToString()).SendAsync("ReceiveMessage", senderId, message);
+        await Clients.User(receiverId.ToString())
+            .SendAsync("ReceiveMessage", senderId, message);
+
+        await Clients.Caller
+            .SendAsync("ReceiveMessage", senderId, message);
     }
 }

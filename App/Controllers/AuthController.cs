@@ -34,8 +34,8 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <param name="command">Consumes a valid refreshToken.</param>
     /// <returns>Returns new token.</returns>
-    [HttpGet("access-token")]
-    public async Task<IActionResult> GenerateAccessTokenAsync([FromQuery] GenerateAccessTokenCommand command)
+    [HttpPost("access-token")]
+    public async Task<IActionResult> GenerateAccessTokenAsync([FromBody] GenerateAccessTokenCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);

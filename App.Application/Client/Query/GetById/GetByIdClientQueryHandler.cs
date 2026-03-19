@@ -1,5 +1,4 @@
 ﻿using App.Application.Common.DTO.Client;
-using App.Application.Common.DTO.Worker;
 using App.Application.Common.Interfaces;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
@@ -27,7 +26,9 @@ public class GetByIdClientQueryHandler : IRequestHandler<GetByIdClientQuery, Gen
             Name = data.Name,
             Id = data.Id,
             Surname = data.Surname,
-            ActiveAddress = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault().Address
+            Address = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.Address,
+            X = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.X,
+            Y = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.Y
         };
 
         return GenericResponse<GetByIdClientDto>.Ok(dto);

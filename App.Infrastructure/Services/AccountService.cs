@@ -49,6 +49,7 @@ public class AccountService : IAccountService
         var role = await _userManager.AddToRoleAsync(data, "Client");
         if (!res.Succeeded || !role.Succeeded)
             return GenericResponse<bool>.Fail();
+
     
         await SentConfirmMailAsync(data.Id);
         

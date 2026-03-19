@@ -1,13 +1,17 @@
+using System.Reflection;
 using App.Application.Account.Command.SignUp;
 using App.Configurations;
 using App.Infrastructure.DependencyInjection;
 using App.Infrastructure.Hubs;
 using Asp.Versioning.ApiExplorer;
+using FluentValidation;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddValidationService();
 
 builder.Services.AddEndpointsApiExplorer(); 
 
@@ -30,7 +34,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AppClient", policy =>
-            policy.WithOrigins("http://127.0.0.1:5500")
+            policy.WithOrigins("http://localhost:3000")
                 .AllowCredentials()
                 .AllowAnyHeader()
                 .AllowAnyMethod());

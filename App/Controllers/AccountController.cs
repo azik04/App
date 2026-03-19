@@ -1,8 +1,8 @@
 ﻿using App.Application.Account.Command.ChangePassword;
-using App.Application.Account.Command.Confirm;
-using App.Application.Account.Command.Reset;
-using App.Application.Account.Command.SentConfirm;
-using App.Application.Account.Command.SentReset;
+using App.Application.Account.Command.ConfirmEmail;
+using App.Application.Account.Command.ForgetPassword;
+using App.Application.Account.Command.ResetPassword;
+using App.Application.Account.Command.SentConfirmEmail;
 using App.Application.Account.Command.SignUp;
 using Asp.Versioning;
 using MediatR;
@@ -37,8 +37,8 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <param name="command">Contains user's userId</param>
     /// <returns>Returns confirm result</returns>
-    [HttpGet("send-confirm/{userId}")]
-    public async Task<IActionResult> SentConfirmEmail([FromRoute] SendConfirmCommand command)
+    [HttpPost("send-confirm")]
+    public async Task<IActionResult> SentConfirmEmail([FromBody] SendConfirmEmailCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
@@ -50,10 +50,10 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <param name="command">Contains user's email address.</param>
     /// <returns>Returns email sending result.</returns>
-    [HttpGet("send-reset/{email}")]
-    public async Task<IActionResult> SentResetPassword([FromRoute] string email)
+    [HttpPost("forget-password")]
+    public async Task<IActionResult> SentResetPassword([FromBody] SendResetCommand command)
     {
-        var result = await _mediator.Send(new SendResetCommand(email));
+        var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -64,7 +64,7 @@ public class AccountController : ControllerBase
     /// <param name="command">Contains UserId and confirmation token.</param>
     /// <returns>Returns confirmation result.</returns>
     [HttpPut("confirm")]
-    public async Task<IActionResult> ConfirmEmail([FromQuery]ConfirmCommand command)
+    public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
@@ -76,8 +76,8 @@ public class AccountController : ControllerBase
     /// </summary>
     /// <param name="command">Contains reset token and new password.</param>
     /// <returns>Returns reset result.</returns>
-    [HttpPut("reset")]
-    public async Task<IActionResult> ResetPassword(ResetCommand command)
+    [HttpPut("reset-password")]
+    public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
