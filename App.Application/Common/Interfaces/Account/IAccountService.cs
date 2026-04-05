@@ -1,14 +1,15 @@
 ﻿using App.Application.Common.DTO.Account;
 using App.Application.Common.Responses;
+using App.Domain.Enums;
 
 namespace App.Application.Common.Interfaces.Account;
 
 public interface IAccountService
 {
+    Task<GenericResponse<bool>> AddRoleAsync();
     Task<GenericResponse<bool>> SignUpAsync(CreateIdentityDto dto);
-    Task<GenericResponse<bool>> SentConfirmMailAsync(string userId);
+    Task<GenericResponse<bool>> SentMailAsync(string email, EmailTypes type);
     Task<GenericResponse<bool>> ChangePasswordAsync(string userId, ChangePasswordDto dto);
     Task<GenericResponse<bool>> ConfirmMailAsync(string userId, string token);
-    Task<GenericResponse<bool>> SentResetMailAsync(string email);
     Task<GenericResponse<bool>> ResetPasswordAsync(string email, string token, ResetPasswordDto dto);
 }

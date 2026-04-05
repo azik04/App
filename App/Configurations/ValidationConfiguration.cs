@@ -2,7 +2,6 @@
 using App.Application.Account.Command.ConfirmEmail;
 using App.Application.Account.Command.ForgetPassword;
 using App.Application.Account.Command.ResetPassword;
-using App.Application.Account.Command.SentConfirmEmail;
 using App.Application.Account.Command.SignUp;
 using App.Application.Auth.Command.GenerateAccessToken;
 using App.Application.Auth.Command.SignIn;
@@ -28,7 +27,6 @@ namespace App.Configurations
             services.AddValidatorsFromAssembly(typeof(ConfiemEmailCommandValidation).Assembly);
             services.AddValidatorsFromAssembly(typeof(ForgetPasswordCommandValidation).Assembly);
             services.AddValidatorsFromAssembly(typeof(ResetPasswordCommandValidation).Assembly);
-            services.AddValidatorsFromAssembly(typeof(SentConfirmEmailCommandValidation).Assembly);
             services.AddValidatorsFromAssembly(typeof(SignUpCommandValidation).Assembly);
         }
     }

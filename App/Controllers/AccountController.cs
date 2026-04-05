@@ -2,7 +2,8 @@
 using App.Application.Account.Command.ConfirmEmail;
 using App.Application.Account.Command.ForgetPassword;
 using App.Application.Account.Command.ResetPassword;
-using App.Application.Account.Command.SentConfirmEmail;
+using App.Application.Account.Command.Role;
+using App.Application.Account.Command.SentMail;
 using App.Application.Account.Command.SignUp;
 using Asp.Versioning;
 using MediatR;
@@ -31,19 +32,26 @@ public class AccountController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-
+    [HttpPost("add-role")]
+    public async Task<IActionResult> AddRoleAsync()
+    {
+        var result = await _mediator.Send(new AddRoleCommand());
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+    
+    
     /// <summary>
     /// Sends a confirmation email
     /// </summary>
-    /// <param name="command">Contains user's userId</param>
+    /// <param name="command">Contains user's email</param>
     /// <returns>Returns confirm result</returns>
-    [HttpPost("send-confirm")]
-    public async Task<IActionResult> SentConfirmEmail([FromBody] SendConfirmEmailCommand command)
+    [HttpPost("send-mail")]
+    public async Task<IActionResult> SentMailAsync([FromBody] SentMailCommand command)
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
-
+    
 
     /// <summary>
     /// Sends a password reset email.

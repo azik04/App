@@ -15,6 +15,6 @@ public class ForgetPasswordCommandHandler : IRequestHandler<SendResetCommand, Ge
 
     public async Task<GenericResponse<bool>> Handle(SendResetCommand request, CancellationToken cancellationToken)
     {
-        return await _accountService.SentResetMailAsync(request.email);
+        return await _accountService.SentMailAsync(request.email, request.EmailTypes);
     }
 }
