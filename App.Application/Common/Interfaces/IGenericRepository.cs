@@ -9,6 +9,6 @@ public interface IGenericRepository<T> where T : class
     Task<T?> GetByIdAsync(object id);
     IQueryable<T> Where(Expression<Func<T, bool>> predicate);
     Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
-    T Update(T entity);
+    Task<T> Update(T entity);
     void Delete(T entity);
 }

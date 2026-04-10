@@ -1,10 +1,14 @@
-﻿using App.Application.Account.Command.ChangePassword;
+﻿using App.Application.Account.Command.Ban;
+using App.Application.Account.Command.ChangePassword;
 using App.Application.Account.Command.ConfirmEmail;
 using App.Application.Account.Command.ForgetPassword;
 using App.Application.Account.Command.ResetPassword;
 using App.Application.Account.Command.Role;
 using App.Application.Account.Command.SentMail;
 using App.Application.Account.Command.SignUp;
+using App.Application.Account.Command.Update;
+using App.Application.Account.Query.GetAll;
+using App.Application.Account.Query.GetById;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -93,6 +97,19 @@ public class AccountController : ControllerBase
 
 
     /// <summary>
+    /// Ban's user.
+    /// </summary>
+    /// <param name="command">Contains user's id.</param>
+    /// <returns>Returns reset result.</returns>
+    [HttpPatch("id/{id}")]
+    public async Task<IActionResult> BanAsync([FromRoute]BanCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+
+    /// <summary>
     /// Changes user password.
     /// </summary>
     /// <param name="command">Contains current and new password.</param>
@@ -101,6 +118,38 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> ChangePasswordAsync(ChangePasswordCommand command)
     {
         var result = await _mediator.Send(command);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+
+    /// <summary>
+    /// Update user.
+    /// </summary>
+    /// <param name="command">Contains user's data.</param>
+    /// <returns>Returns update result.</returns>
+    [HttpPut("id/{id}")]
+    public async Task<IActionResult> Update(string id, [FromForm] UpdateAccountCommand command)
+    {
+        var result = await _mediator.Send(command with { id = id });
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    /// <summary>
+    /// Update user.
+    /// </summary>
+    /// <param name="command">Contains user's data.</param>
+    /// <returns>Returns update result.</returns>
+    [HttpGet("id/{id}")]
+    public async Task<IActionResult> GetById([FromRoute] GetByIdQuery command)
+    {
+        var result = await _mediator.Send(command);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpGet("get-all")]
+    public async Task<IActionResult> GetAllAsync([FromQuery] GetAllAccountQuery query)
+    {
+        var result = await _mediator.Send(query);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

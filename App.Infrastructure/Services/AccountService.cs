@@ -7,6 +7,7 @@ using App.Domain.Entities.Acc;
 using App.Domain.Enums;
 using App.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure.Services;
 
@@ -25,25 +26,19 @@ public class AccountService : IAccountService
         _roleManager = roleManager;
     }
 
-    public async Task<GenericResponse<bool>> SignUpAsync(CreateIdentityDto dto)
+    public async Task<GenericResponse<bool>> SignUpAsync(CreateIdentityDto dto, Guid? workerId, Guid? clientId)
     {
         var entity = await _userManager.FindByEmailAsync(dto.Email);
         if (entity != null)
             return GenericResponse<bool>.Fail("Пользователь с таким Email уже существует");
-
-        var client = new Clients
-        {
-            Name = dto.Name,
-            Surname = dto.Surname,
-        };
-        await _clientRep.InsertAsync(client);
 
         var data = new ApplicationUsers
         {
             Email = dto.Email,
             PhoneNumber = dto.PhoneNumber,
             UserName = dto.Name + dto.Surname,
-            ClientId = client.Id
+            ClientId = clientId,
+            WorkerId = workerId
         };
 
         var res = await _userManager.CreateAsync(data, dto.Password);
@@ -57,6 +52,25 @@ public class AccountService : IAccountService
         return GenericResponse<bool>.Ok(true);
     }
     
+    public async Task<GetByIdAccount> GetById(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        var dto = new GetByIdAccount
+        {
+            Id = user.Id,
+            Name = user.UserName,
+            Surname = user.UserName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            ClientId = user.ClientId,
+            WorkerId = user.WorkerId,
+        };
+
+        return dto;
+    }
+
+
     public async Task<GenericResponse<bool>> SentMailAsync(string email, EmailTypes type)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -139,15 +153,36 @@ public class AccountService : IAccountService
         return GenericResponse<bool>.Ok(true);
     }
 
-    public async Task<GenericResponse<bool>> BanUser(string id)
+    public async Task<GenericResponse<bool>> BanAsync(string id)
     {
         var data = await _userManager.FindByIdAsync(id);
         if (data == null)
             return GenericResponse<bool>.Fail("User Not Found");
 
-        data.LockoutEnabled = true;
-        await _userManager.SetLockoutEndDateAsync(data, DateTime.Now.AddDays(3));
+        if (data.LockoutEnd.HasValue && data.LockoutEnd.Value > DateTime.Now)
+        {
+            data.LockoutEnabled = true;
+            await _userManager.SetLockoutEndDateAsync(data, DateTime.Now.AddDays(3));
+        }
 
         return GenericResponse<bool>.Ok(true);
+    }
+
+    public async Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize)
+    {
+        var data = await _userManager.Users.Skip((pageNumber - 1) * pageSize).Take(pageSize).OrderBy(x => x.Id).Select(x => new GetByIdAccount()
+        {
+            Id = x.Id,
+            Name = x.UserName,
+            Surname = x.UserName,
+            Email = x.Email,
+            PhoneNumber = x.PhoneNumber,
+            ClientId = x.ClientId,
+            WorkerId = x.WorkerId,
+        }).ToListAsync();
+
+        var totalCount = await _userManager.Users.CountAsync();
+
+        return PaginatedResponse<GetByIdAccount>.Ok(data, pageNumber, pageSize, totalCount);
     }
 }

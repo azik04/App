@@ -9,5 +9,7 @@ public class WorkerConfiguration : IEntityTypeConfiguration<Workers>
     public void Configure(EntityTypeBuilder<Workers> builder)
     {
         builder.HasKey(x => x.Id);
+
+
     }
 }

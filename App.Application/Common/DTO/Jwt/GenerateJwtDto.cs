@@ -2,7 +2,11 @@
 
 public class GenerateJwtDto
 {
-    public string Id { get; set; }
+    public string Role { get; set; }
     public string Email { get; set; }
     public Guid? ClientId { get; set; }
+    public Guid? WorkerId { get; set; }
+    public string AppId { get; set; }
+    public string? ClientName { get; set; }
+    public string? WorkerName { get; set; }
 }

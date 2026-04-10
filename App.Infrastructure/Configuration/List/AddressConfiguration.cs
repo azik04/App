@@ -11,5 +11,6 @@ public class AddressConfiguration : IEntityTypeConfiguration<Addresses>
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Client).WithMany(x => x.Adresses).HasForeignKey(x => x.ClientId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Workers).WithMany(x => x.Adresses).HasForeignKey(x => x.WorkerId).OnDelete(DeleteBehavior.Restrict);
     }
 }

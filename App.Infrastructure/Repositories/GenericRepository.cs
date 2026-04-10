@@ -23,7 +23,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Delete(T entity)
     {
         _dbSet.Remove(entity);
-        _context.SaveChangesAsync();
+        _context.SaveChanges();
     }
 
     public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
@@ -42,10 +42,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public T Update(T entity)
+    public async Task<T> Update(T entity)
     {
         _dbSet.Update(entity);
-        _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
         return entity;
     } 
 

@@ -4,4 +4,4 @@ using MediatR;
 
 namespace App.Application.Address.Query.GetAll;
 
-public record GetAllAddressQuery(Guid clientId) : IRequest<GenericResponse<List<GetAllAddressDto>>>;
+public record GetAllAddressQuery(string appId) : IRequest<GenericResponse<List<GetAllAddressDto>>>;

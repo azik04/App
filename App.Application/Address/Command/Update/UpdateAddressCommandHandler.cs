@@ -23,7 +23,7 @@ public class UpdateAddressCommandHandler : IRequestHandler<UpdateAddressCommand,
         data.Y = request.Y;
         data.Name = request.Name;
 
-        _addressRepository.Update(data);
+        await _addressRepository.Update(data);
 
         return GenericResponse<bool>.Ok(true);
     }

@@ -1,13 +1,26 @@
-using System.Reflection;
 using App.Application.Account.Command.SignUp;
 using App.Configurations;
 using App.Infrastructure.DependencyInjection;
 using App.Infrastructure.Hubs;
+using App.Middleware;
 using Asp.Versioning.ApiExplorer;
-using FluentValidation;
-using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+    .WriteTo.File(
+        path: builder.Configuration["Serilog:Path"],
+        rollingInterval: Enum.Parse<RollingInterval>(builder.Configuration["Serilog:RollingInterval"]),
+        outputTemplate: builder.Configuration["Serilog:OutputTemplate"]
+    )
+    .CreateLogger();
+
 
 builder.Services.AddControllers();
 
@@ -22,6 +35,7 @@ builder.Services.AddSignalR();
 builder.Services.AddDatabase(builder.Configuration);
 
 builder.Services.AddServices(builder.Configuration);
+builder.Host.UseSerilog();
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -61,11 +75,15 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseMiddleware<BaseMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseCors("AppClient");
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

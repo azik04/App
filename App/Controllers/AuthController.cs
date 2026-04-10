@@ -2,8 +2,10 @@
 using App.Application.Auth.Command.SignIn;
 using App.Application.Auth.Command.SignOut;
 using Asp.Versioning;
+using Google.Apis.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace App.Controllers;
 
@@ -26,6 +28,22 @@ public class AuthController : ControllerBase
     {
         var result = await _mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    [HttpPost("google")]
+    public async Task<IActionResult> SignInAsync([FromForm] string token)
+    {
+        if (string.IsNullOrEmpty(token))
+            return BadRequest(new { error = "Token is required" });
+
+        var settings = new GoogleJsonWebSignature.ValidationSettings
+        {
+            Audience = new[] { "641553983301-n4knggtg5vua9ivtimgjkbubrcrjo7j3.apps.googleusercontent.com" }
+        };
+
+        var payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
+
+        return Ok(new { success = true, user = payload });
     }
 
 

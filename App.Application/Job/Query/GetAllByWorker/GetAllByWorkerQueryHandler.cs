@@ -2,7 +2,6 @@
 using App.Application.Common.Interfaces;
 using App.Application.Common.Interfaces.Job;
 using App.Application.Common.Responses;
-using App.Domain.Entities.Acc;
 using App.Domain.Entities.Main;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

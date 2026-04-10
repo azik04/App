@@ -28,7 +28,15 @@ namespace App.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -51,6 +59,14 @@ namespace App.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -80,12 +96,15 @@ namespace App.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("X")
                         .IsRequired()
@@ -101,6 +120,8 @@ namespace App.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("Address");
                 });
@@ -698,10 +719,16 @@ namespace App.Infrastructure.Migrations
                     b.HasOne("App.Domain.Entities.Acc.Clients", "Client")
                         .WithMany("Adresses")
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("App.Domain.Entities.Acc.Workers", "Workers")
+                        .WithMany("Adresses")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Client");
+
+                    b.Navigation("Workers");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.List.AppFiles", b =>
@@ -953,6 +980,8 @@ namespace App.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Domain.Entities.Acc.Workers", b =>
                 {
+                    b.Navigation("Adresses");
+
                     b.Navigation("Job");
 
                     b.Navigation("Payment");

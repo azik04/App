@@ -7,5 +7,4 @@ public class GetByIdAddressDto
     public string X { get; set; }
     public string Y { get; set; }
     public string? Address { get; set; }
-    public Guid ClientId { get; set; }
 }

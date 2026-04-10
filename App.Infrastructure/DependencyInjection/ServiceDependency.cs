@@ -4,6 +4,7 @@ using App.Application.Common.Interfaces.Auth;
 using App.Application.Common.Interfaces.File;
 using App.Application.Common.Interfaces.Helpers;
 using App.Application.Common.Interfaces.Integrations;
+using App.Application.Common.Interfaces.Refresh;
 using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
@@ -34,6 +35,7 @@ public static class ServiceDependency
         services.AddScoped<ITokenHelper, TokenHelper>();
         services.AddScoped<IAppFileService, AppFileService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IRefreshService, RefreshService>();
 
         services.AddScoped<IGenericRepository<Refreshes>, GenericRepository<Refreshes>>();
         services.AddScoped<IGenericRepository<Clients>, GenericRepository<Clients>>();

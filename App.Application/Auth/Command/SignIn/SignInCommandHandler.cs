@@ -15,10 +15,13 @@ public class SignInCommandHandler : IRequestHandler<SignInCommand, TokenResponse
 
     public async Task<TokenResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
+
         var dto = new AuthDto
         {
             Email = request.Email,
             Password = request.Password,
+            Token = request.Token,
+            AuthType = request.AuthType,
         };
 
         return await _authService.SignInAsync(dto);

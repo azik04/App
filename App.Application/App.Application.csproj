@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Account\Query\GetById\GetByIdQueryHandler.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
   </ItemGroup>
 
@@ -15,21 +19,6 @@
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Account\Query\**" />
-    <Compile Remove="Новая папка\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Account\Query\**" />
-    <EmbeddedResource Remove="Новая папка\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Account\Query\**" />
-    <None Remove="Новая папка\**" />
   </ItemGroup>
 
 </Project>

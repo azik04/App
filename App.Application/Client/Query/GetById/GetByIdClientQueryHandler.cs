@@ -25,10 +25,10 @@ public class GetByIdClientQueryHandler : IRequestHandler<GetByIdClientQuery, Gen
         {
             Name = data.Name,
             Id = data.Id,
+            PhoneNumber = data.PhoneNumber,
+            FilePath = data.FilePath,
             Surname = data.Surname,
             Address = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.Address,
-            X = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.X,
-            Y = data.Adresses.Where(x => x.isAcrive == true).SingleOrDefault()?.Y
         };
 
         return GenericResponse<GetByIdClientDto>.Ok(dto);

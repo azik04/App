@@ -19,7 +19,7 @@ namespace App.Configurations
             services.AddFluentValidationClientsideAdapters();
             //Auth
             services.AddValidatorsFromAssembly(typeof(GenerateAccessTokenCommandValidation).Assembly);
-            services.AddValidatorsFromAssembly(typeof(SignInCommandValidation).Assembly);
+            //services.AddValidatorsFromAssembly(typeof(SignInCommandValidation).Assembly);
             services.AddValidatorsFromAssembly(typeof(SignOutCommandValidation).Assembly);
 
             //Account

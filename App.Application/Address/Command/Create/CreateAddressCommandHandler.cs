@@ -1,5 +1,7 @@
 ﻿using App.Application.Common.Interfaces;
+using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
+using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using MediatR;
 
@@ -8,21 +10,53 @@ namespace App.Application.Address.Command.Create;
 public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand, GenericResponse<bool>>
 {
     private readonly IGenericRepository<Addresses> _addressRepository;
-    public CreateAddressCommandHandler(IGenericRepository<Addresses> addressRepository) => _addressRepository = addressRepository;
+    private readonly IAccountService _accountService;
+    private readonly IGenericRepository<Clients> _clientRepository;
+    private readonly IGenericRepository<Workers> _workerRepository;
 
+    public CreateAddressCommandHandler(IGenericRepository<Addresses> addressRepository, IAccountService accountService, 
+        IGenericRepository<Clients> clientRepository, IGenericRepository<Workers> workerRepository) 
+    {
+        _accountService = accountService;
+        _clientRepository = clientRepository;
+        _workerRepository = workerRepository;
+        _addressRepository = addressRepository; 
+    }
 
     public async Task<GenericResponse<bool>> Handle(CreateAddressCommand request, CancellationToken cancellationToken)
     {
-        var data = new Addresses()
-        {
-            Address = request.Address,
-            ClientId = request.ClientId,
-            Name = request.Name,
-            X = request.X,
-            Y = request.Y
-        };
+        var account = await _accountService.GetById(request.AppId);
 
-        await _addressRepository.InsertAsync(data);
+        if (account.ClientId != null)
+        {
+            var client = await _clientRepository.GetByIdAsync(account.ClientId);
+
+            var data = new Addresses()
+            {
+                Address = request.Address,
+                ClientId = client.Id,
+                Name = request.Name,
+                X = request.X,
+                Y = request.Y
+            };
+            await _addressRepository.InsertAsync(data);
+        }
+
+        if (account.WorkerId != null)
+        {
+            var worker = await _workerRepository.GetByIdAsync(account.WorkerId);
+
+            var data = new Addresses()
+            {
+                Address = request.Address,
+                WorkerId = worker.Id,
+                Name = request.Name,
+                X = request.X,
+                Y = request.Y
+            };
+            await _addressRepository.InsertAsync(data);
+        } 
+        
         return GenericResponse<bool>.Ok(true);
     }
 }
