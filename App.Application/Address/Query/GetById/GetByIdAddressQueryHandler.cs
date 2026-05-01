@@ -37,8 +37,8 @@ public class GetByIdAddressQueryHandler : IRequestHandler<GetByIdAddressQuery, G
             Address = data.Address,
             Id = data.Id,
             Name = data.Name,
-            X = data.X,
-            Y = data.Y
+            Lat = data.Lat,
+            Lng = data.Lng
         };
 
         return GenericResponse<GetByIdAddressDto>.Ok(dto);

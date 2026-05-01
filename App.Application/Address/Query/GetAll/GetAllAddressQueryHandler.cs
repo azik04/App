@@ -33,9 +33,9 @@ public class GetAllAddressQueryHandler : IRequestHandler<GetAllAddressQuery, Gen
         
         var data = new List<GetAllAddressDto>();
 
-        if (account.ClientId != null)
+        if (account.Data.ClientId != null)
         {
-            data = _addressRepository.Where(x => x.ClientId == account.ClientId).Select(item => new GetAllAddressDto
+            data = _addressRepository.Where(x => x.ClientId == account.Data.ClientId).Select(item => new GetAllAddressDto
             {
                 Id = item.Id,
                 Name = item.Name,
@@ -43,9 +43,9 @@ public class GetAllAddressQueryHandler : IRequestHandler<GetAllAddressQuery, Gen
             }).ToList();
         }
 
-        if (account.WorkerId != null)
+        if (account.Data.WorkerId != null)
         {
-            data = _addressRepository.Where(x => x.WorkerId == account.WorkerId).Select(item => new GetAllAddressDto
+            data = _addressRepository.Where(x => x.WorkerId == account.Data.WorkerId).Select(item => new GetAllAddressDto
             {
                 Id = item.Id,
                 Name = item.Name,

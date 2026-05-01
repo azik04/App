@@ -26,33 +26,33 @@ public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GenericResponse
 
         GetByIdAccount dto = null;
 
-        if (account.ClientId != null)
+        if (account.Data.ClientId != null)
         {
-            var client = await _clientService.GetByIdAsync(account.ClientId);
+            var client = await _clientService.GetByIdAsync(account.Data.ClientId);
             dto = new GetByIdAccount
             {
-                Id = account.Id,
+                Id = account.Data.Id,
                 Name = client.Name,
                 Surname = client.Surname,
-                Email = account.Email,
+                Email = account.Data.Email,
                 PhoneNumber = client.PhoneNumber,
                 FilePath = client.FilePath,
-                ClientId = account.ClientId
+                ClientId = account.Data.ClientId
             };
         }
 
-        if (account.WorkerId != null)
+        if (account.Data.WorkerId != null)
         {
-            var client = await _workerService.GetByIdAsync(account.WorkerId);
+            var client = await _workerService.GetByIdAsync(account.Data.WorkerId);
             dto = new GetByIdAccount
             {
-                Id = account.Id,
+                Id = account.Data.Id,
                 Name = client.Name,
                 Surname = client.Surname,
-                Email = account.Email,
+                Email = account.Data.Email,
                 PhoneNumber = client.PhoneNumber,
                 FilePath = client.FilePath,
-                ClientId = account.ClientId
+                ClientId = account.Data.ClientId
             };
         }
         return GenericResponse<GetByIdAccount>.Ok(dto);

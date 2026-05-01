@@ -27,32 +27,32 @@ public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand,
     {
         var account = await _accountService.GetById(request.AppId);
 
-        if (account.ClientId != null)
+        if (account.Data.ClientId != null)
         {
-            var client = await _clientRepository.GetByIdAsync(account.ClientId);
+            var client = await _clientRepository.GetByIdAsync(account.Data.ClientId);
 
             var data = new Addresses()
             {
                 Address = request.Address,
                 ClientId = client.Id,
                 Name = request.Name,
-                X = request.X,
-                Y = request.Y
+                Lat = request.Lat,
+                Lng = request.Lng
             };
             await _addressRepository.InsertAsync(data);
         }
 
-        if (account.WorkerId != null)
+        if (account.Data.WorkerId != null)
         {
-            var worker = await _workerRepository.GetByIdAsync(account.WorkerId);
+            var worker = await _workerRepository.GetByIdAsync(account.Data.WorkerId);
 
             var data = new Addresses()
             {
                 Address = request.Address,
                 WorkerId = worker.Id,
                 Name = request.Name,
-                X = request.X,
-                Y = request.Y
+                Lat = request.Lat,
+                Lng = request.Lng
             };
             await _addressRepository.InsertAsync(data);
         } 

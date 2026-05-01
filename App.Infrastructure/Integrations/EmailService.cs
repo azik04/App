@@ -66,12 +66,12 @@ public class EmailService : IEmailService
             case EmailTypes.ConfirmationMail:
 
                 body = body.Replace("{{CONFIRM_LINK}}",
-                    $"http://localhost:3000/auth/confirm-email?userId={userId}&token={encodedToken}&type=1");
+                    $"http://localhost:5173/auth/confirm-mail?userId={userId}&token={encodedToken}&type=1");
                 break;
 
             case EmailTypes.ResetPasswordMail:
                 body = body.Replace("{{RESET_LINK}}",
-                    $"http://localhost:3000/auth/reset-password?userId={userId}&token={encodedToken}&type=2");
+                    $"http://localhost:5173/auth/reset-password?userId={userId}&token={encodedToken}&type=2");
                 break;
         }
 

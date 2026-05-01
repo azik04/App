@@ -14,8 +14,8 @@ namespace App.Application.Common.DTO.Job
         public decimal WorkerRating { get; set; }
         public int AddressId { get; set; }
         public string AdressName { get; set; }
-        public string X { get; set; }
-        public string Y { get; set; }
+        public decimal Lat { get; set; }
+        public decimal Lng { get; set; }
         public int ServiceId { get; set; }
         public string ServiceName { get; set; }
         public bool isActive { get; set; }

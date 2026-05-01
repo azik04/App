@@ -14,6 +14,6 @@ public interface IAccountService
     Task<GenericResponse<bool>> ResetPasswordAsync(string email, string token, ResetPasswordDto dto);
     Task<GenericResponse<bool>> BanAsync(string id);
 
-    Task<GetByIdAccount> GetById(string id);
+    Task<GenericResponse<GetByIdAccount>> GetById(string id);
     Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize);
 }

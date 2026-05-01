@@ -12,7 +12,7 @@ public static class DatabaseDependecy
         var connection = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<AppDbContext>(opt =>
-            opt.UseSqlServer(connection)
+            opt.UseInMemoryDatabase("connection")
         );
     }
 }

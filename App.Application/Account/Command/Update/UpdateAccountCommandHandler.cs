@@ -33,9 +33,9 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand,
         var files = new List<IFormFile> { request.file };
         var filePath = await _appFileService.CreateAsync(files, Domain.Enums.FileTypes.Profile);
 
-        if (user.ClientId != null)
+        if (user.Data.ClientId != null)
         {
-            var client = await _clientRepository.GetByIdAsync(user.ClientId);
+            var client = await _clientRepository.GetByIdAsync(user.Data.ClientId);
             if (client.FilePath != null)
             {
                 _appFileService.Delete(client.FilePath);
@@ -49,9 +49,9 @@ public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand,
             await _clientRepository.Update(client);
         }
 
-        if (user.WorkerId != null)
+        if (user.Data.WorkerId != null)
         {
-            var worker = await _workerRepository.GetByIdAsync(user.WorkerId);
+            var worker = await _workerRepository.GetByIdAsync(user.Data.WorkerId);
 
             worker.Name = request.name;
             worker.Surname = request.surname;

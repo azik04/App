@@ -52,10 +52,13 @@ public class AccountService : IAccountService
         return GenericResponse<bool>.Ok(true);
     }
     
-    public async Task<GetByIdAccount> GetById(string id)
+    public async Task<GenericResponse<GetByIdAccount>> GetById(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
 
+        if (user == null)
+            return GenericResponse<GetByIdAccount>.Fail("User not found");
+        
         var dto = new GetByIdAccount
         {
             Id = user.Id,
@@ -67,7 +70,7 @@ public class AccountService : IAccountService
             WorkerId = user.WorkerId,
         };
 
-        return dto;
+        return GenericResponse<GetByIdAccount>.Ok(dto);
     }
 
 

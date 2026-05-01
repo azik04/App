@@ -8,8 +8,8 @@ namespace App.Domain.Entities.List
         public int Id { get; set; }
 
         public string Name {  get; set; }
-        public string X { get; set; }
-        public string Y { get; set; }
+        public decimal Lat { get; set; }
+        public decimal Lng { get; set; }
         public string? Address { get; set; }
         public bool isAcrive { get; set; } = false;
         public Guid? ClientId { get; set; }

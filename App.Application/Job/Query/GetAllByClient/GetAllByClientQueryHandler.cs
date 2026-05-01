@@ -28,8 +28,8 @@ public class GetAllByClientQueryHandler : IRequestHandler<GetAllByClientQuery, G
             {
                 AddressId = item.AddressId,
                 AdressName = item.Address.Name,
-                X = item.Address.X,
-                Y = item.Address.Y,
+                Lat = item.Address.Lat,
+                Lng = item.Address.Lng,
                 Description = item.Description,
                 ClientId = item.ClientId,
                 ClientName = item.Client.Name + " " + item.Client.Surname,

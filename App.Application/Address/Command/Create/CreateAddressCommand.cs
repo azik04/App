@@ -4,5 +4,4 @@ using MediatR;
 
 namespace App.Application.Address.Command.Create;
 
-public sealed record CreateAddressCommand (string Name, string X, string Y, string? Address, string AppId) 
-    : IRequest<GenericResponse<bool>>;
+public sealed record CreateAddressCommand (string Name, decimal Lat, decimal Lng, string? Address, string AppId) : IRequest<GenericResponse<bool>>;

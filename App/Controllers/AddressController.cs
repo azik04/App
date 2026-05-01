@@ -76,13 +76,13 @@ public class AddressController : Controller
     /// <param name="command">Contains the address updating data.</param>
     /// <returns>Returns update adress result</returns>
     [HttpPut("id/{id}")]
-    public async Task<IActionResult> UpdateAsunc([FromRoute]int id, [FromBody] UpdateAddressRequest request)
+    public async Task<IActionResult> UpdateAsunc([FromRoute]int id, [FromBody] UpdateAddressCommand request)
     {
         var command = new UpdateAddressCommand(
             id,
             request.Name,
-            request.X,
-            request.Y,
+            request.Lat,
+            request.Lng,
             request.Address
         );
 
