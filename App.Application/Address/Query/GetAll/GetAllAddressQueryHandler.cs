@@ -28,8 +28,8 @@ public class GetAllAddressQueryHandler : IRequestHandler<GetAllAddressQuery, Gen
     public async Task<GenericResponse<List<GetAllAddressDto>>> Handle(GetAllAddressQuery request, CancellationToken cancellationToken)
     {
         var account = await _accountService.GetById(request.appId);
-        if (account == null)
-            throw new Exception("Account not found");
+        if (account.Data == null)
+            return GenericResponse<List<GetAllAddressDto>>.Fail("Account not found");
         
         var data = new List<GetAllAddressDto>();
 

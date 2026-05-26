@@ -31,6 +31,7 @@ public class TokenHelper : ITokenHelper
         {
             new Claim(ClaimTypes.Email, dto.Email),
             new Claim(ClaimTypes.NameIdentifier, dto.AppId),
+            new Claim("FilePath", dto.FilePath),
             new Claim("Role", dto.Role)
         };
 

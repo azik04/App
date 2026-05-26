@@ -18,7 +18,6 @@ public class SubmitJobCommandHandler : IRequestHandler<SubmitJobCommand, Generic
         if (item == null)
             return GenericResponse<bool>.Fail();
 
-        item.isActive = true;
         item.StatusId = 3;
 
         _jobRepository.Update(item);

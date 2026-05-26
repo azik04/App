@@ -1,7 +1,6 @@
 ﻿using App.Application.WorkerService.Command.Create;
 using App.Application.WorkerService.Command.Delete;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers;
@@ -9,12 +8,8 @@ namespace App.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class WorkerServiceController : ControllerBase
+public class WorkerServiceController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public WorkerServiceController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Create new service for specific worker.
     /// </summary>
@@ -23,7 +18,7 @@ public class WorkerServiceController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateWorkerServiceCommand command )
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -36,7 +31,7 @@ public class WorkerServiceController : ControllerBase
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAll([FromRoute] DeleteWorkerServiceCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

@@ -2,20 +2,15 @@
 using App.Application.Services.Command.Delete;
 using App.Application.Services.Query.GetAll;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class ServiceController : ControllerBase
+public class ServiceController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public ServiceController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Creates a new service.
     /// </summary>
@@ -24,7 +19,7 @@ public class ServiceController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateServiceCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -36,7 +31,7 @@ public class ServiceController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
-        var result = await _mediator.Send(new GetAllServiceQuery());
+        var result = await Mediator.Send(new GetAllServiceQuery());
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -50,7 +45,7 @@ public class ServiceController : ControllerBase
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAll([FromRoute] DeleteServiceCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

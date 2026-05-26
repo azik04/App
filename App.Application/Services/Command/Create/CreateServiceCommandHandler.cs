@@ -1,6 +1,4 @@
-﻿using App.Application.Common.DTO.Service;
-using App.Application.Common.Interfaces;
-using App.Application.Common.Interfaces.Services;
+﻿using App.Application.Common.Interfaces;
 using App.Application.Common.Responses;
 using MediatR;
 
@@ -18,6 +16,7 @@ public class CreateServiceCommandHandler : IRequestHandler<CreateServiceCommand,
         {
             Name = request.Name,
         };
+
         await _genericRepository.InsertAsync(data);
 
         return GenericResponse<bool>.Ok(true);

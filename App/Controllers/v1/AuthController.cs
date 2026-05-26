@@ -3,21 +3,15 @@ using App.Application.Auth.Command.SignIn;
 using App.Application.Auth.Command.SignOut;
 using Asp.Versioning;
 using Google.Apis.Auth;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public AuthController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Auth user with a specific params.
     /// </summary>
@@ -26,7 +20,7 @@ public class AuthController : ControllerBase
     [HttpPost("sign-in")]
     public async Task<IActionResult> SignInAsync(SignInCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -55,7 +49,7 @@ public class AuthController : ControllerBase
     [HttpPost("access-token")]
     public async Task<IActionResult> GenerateAccessTokenAsync([FromBody] GenerateAccessTokenCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -68,7 +62,7 @@ public class AuthController : ControllerBase
     [HttpPut("sign-out")]
     public async Task<IActionResult> SignOutAsync(SignOutCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

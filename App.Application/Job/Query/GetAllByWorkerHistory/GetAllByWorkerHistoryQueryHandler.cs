@@ -38,7 +38,6 @@ public class GetAllByWorkerHistoryQueryHandler : IRequestHandler<GetAllByWorkerH
                 WorkerRating = item.Worker.Rating,
                 ServiceId = item.ServiceId,
                 ServiceName = item.Service.Name,
-                isActive = item.isActive,
                 isHandled = item.isHandled,
                 Name = item.Name,
                 StatusId = item.StatusId,

@@ -10,20 +10,15 @@ using App.Application.Account.Command.Update;
 using App.Application.Account.Query.GetAll;
 using App.Application.Account.Query.GetById;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class AccountController : ControllerBase
+public class AccountController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public AccountController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Registers a new user.
     /// </summary>
@@ -32,14 +27,14 @@ public class AccountController : ControllerBase
     [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp(SignUpCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
     [HttpPost("add-role")]
     public async Task<IActionResult> AddRoleAsync()
     {
-        var result = await _mediator.Send(new AddRoleCommand());
+        var result = await Mediator.Send(new AddRoleCommand());
         return result.Success ? Ok(result) : BadRequest(result);
     }
     
@@ -52,7 +47,7 @@ public class AccountController : ControllerBase
     [HttpPost("send-mail")]
     public async Task<IActionResult> SentMailAsync([FromBody] SentMailCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
     
@@ -65,7 +60,7 @@ public class AccountController : ControllerBase
     [HttpPost("forget-password")]
     public async Task<IActionResult> SentResetPassword([FromBody] SendResetCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -78,7 +73,7 @@ public class AccountController : ControllerBase
     [HttpPut("confirm")]
     public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -91,7 +86,7 @@ public class AccountController : ControllerBase
     [HttpPut("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -104,7 +99,7 @@ public class AccountController : ControllerBase
     [HttpPatch("id/{id}")]
     public async Task<IActionResult> BanAsync([FromRoute]BanCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -117,7 +112,7 @@ public class AccountController : ControllerBase
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePasswordAsync(ChangePasswordCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -130,7 +125,7 @@ public class AccountController : ControllerBase
     [HttpPut("id/{id}")]
     public async Task<IActionResult> Update(string id, [FromForm] UpdateAccountCommand command)
     {
-        var result = await _mediator.Send(command with { id = id });
+        var result = await Mediator.Send(command with { id = id });
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
@@ -142,14 +137,14 @@ public class AccountController : ControllerBase
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetById([FromRoute] GetByIdQuery command)
     {
-        var result = await _mediator.Send(command);
+        var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
     [HttpGet("get-all")]
     public async Task<IActionResult> GetAllAsync([FromQuery] GetAllAccountQuery query)
     {
-        var result = await _mediator.Send(query);
+        var result = await Mediator.Send(query);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 }

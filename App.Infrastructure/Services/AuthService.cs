@@ -70,17 +70,20 @@ public class AuthService : IAuthService
 
         string? clientName = null;
         string? workerName = null;
+        string? photo = null;
 
         if (role.FirstOrDefault() == "Worker")
         {
             var name = _workerRepository.GetByIdAsync(entity.WorkerId).Result;
             workerName = name.Name + " " + name.Surname;
+            photo = name.FilePath;
         }
 
         if (role.FirstOrDefault() == "Client")
         {
             var name = _clientRepository.GetByIdAsync(entity.ClientId).Result;
             clientName = name.Name + " " + name.Surname;
+            photo = name.FilePath;
         }
 
         var jwt = new GenerateJwtDto
@@ -91,6 +94,7 @@ public class AuthService : IAuthService
             WorkerId = entity.WorkerId,
             AppId = entity.Id,
             ClientName = clientName,
+            FilePath = photo,
             WorkerName = workerName,
         }; 
 

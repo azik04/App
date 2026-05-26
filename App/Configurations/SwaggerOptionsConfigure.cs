@@ -1,4 +1,4 @@
-using Asp.Versioning.ApiExplorer;
+﻿using Asp.Versioning.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -10,7 +10,7 @@ public class SwaggerOptionsConfigure : IConfigureOptions<SwaggerGenOptions>
     private readonly IApiVersionDescriptionProvider _provider;
 
     public SwaggerOptionsConfigure(IApiVersionDescriptionProvider provider) => _provider = provider;
-    
+
     public void Configure(SwaggerGenOptions options)
     {
         foreach (var item in _provider.ApiVersionDescriptions)

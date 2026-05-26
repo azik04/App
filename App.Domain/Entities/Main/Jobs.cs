@@ -19,6 +19,5 @@ public class Jobs
     public Services Service { get; set; }
     public int StatusId { get; set; }
     public Statuses Statuse { get; set; }
-    public bool isActive { get; set; } 
     public List<AppFiles> JobFile { get; set; } 
 }

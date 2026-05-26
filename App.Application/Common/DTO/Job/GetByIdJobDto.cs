@@ -9,8 +9,8 @@ public class GetByIdJobDto
     public Guid ClientId { get; set; }
     public string ClientName { get; set; }
     public Guid? WorkerId { get; set; }
-    public string WorkerName { get; set; }
-    public decimal WorkerRating { get; set; }
+    public string? WorkerName { get; set; }
+    public decimal? WorkerRating { get; set; }
     public int AddressId { get; set; }
     public string AdressName { get; set; }
     public decimal Lat { get; set; }

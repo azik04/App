@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Job\**" />
+    <Content Remove="wwwroot\Job\**" />
+    <EmbeddedResource Remove="wwwroot\Job\**" />
+    <None Remove="wwwroot\Job\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="10.0.0-preview.1" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="10.0.0-preview.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
@@ -30,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Job\" />
     <Folder Include="wwwroot\Profiles\" />
   </ItemGroup> 
 

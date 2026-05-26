@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Controllers
+namespace App.Controllers.v1
 {
     [Route("api/[controller]")]
     [ApiController]

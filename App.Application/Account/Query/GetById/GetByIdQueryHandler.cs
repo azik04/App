@@ -24,6 +24,9 @@ public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GenericResponse
     {
         var account = await _accountService.GetById(request.id);
 
+        if (account.Data == null)
+            return GenericResponse<GetByIdAccount>.Fail("User not found");
+
         GetByIdAccount dto = null;
 
         if (account.Data.ClientId != null)

@@ -1,21 +1,16 @@
 using App.Application.Reviews.Command.Create;
 using App.Application.Reviews.Query.GetAll;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class ReviewController : ControllerBase
+public class ReviewController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public ReviewController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Creates a new review.
     /// </summary>
@@ -24,7 +19,7 @@ public class ReviewController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateReviewCommand command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -37,7 +32,7 @@ public class ReviewController : ControllerBase
     [HttpGet("worker/{workerId}")]
     public async Task<IActionResult> GetAllAsync([FromRoute] GetAllReviewQuery command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 }

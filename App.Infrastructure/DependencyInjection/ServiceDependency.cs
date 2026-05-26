@@ -9,6 +9,7 @@ using App.Domain.Entities.Acc;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
 using App.Domain.Entities.Rel;
+using App.Infrastructure.BackgroundJob;
 using App.Infrastructure.Context;
 using App.Infrastructure.Helpers;
 using App.Infrastructure.Identity;
@@ -41,11 +42,15 @@ public static class ServiceDependency
         services.AddScoped<IGenericRepository<Clients>, GenericRepository<Clients>>();
         services.AddScoped<IGenericRepository<Addresses>, GenericRepository<Addresses>>();
         services.AddScoped<IGenericRepository<Workers>, GenericRepository<Workers>>();
+        services.AddScoped<IGenericRepository<Statuses>, GenericRepository<Statuses>>();
+
         services.AddScoped<IGenericRepository<Domain.Entities.List.Services>, GenericRepository<Domain.Entities.List.Services>>();
         services.AddScoped<IGenericRepository<Reviews>, GenericRepository<Reviews>>();
         services.AddScoped<IGenericRepository<AppFiles>, GenericRepository<AppFiles>>();
         services.AddScoped<IGenericRepository<Jobs>, GenericRepository<Jobs>>();
         services.AddScoped<IGenericRepository<WorkerServices>, GenericRepository<WorkerServices>>();
+
+        services.AddTransient<UserBackgroundJob>();
 
         services.Configure<JwtSettings>(
             configuration.GetSection("JWT"));

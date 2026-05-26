@@ -5,13 +5,14 @@ namespace App.Application.Common.DTO.Job
 {
     public class GetAllJobDto
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public Guid ClientId { get; set; }
         public string ClientName { get; set; }
         public Guid? WorkerId { get; set; }
-        public string WorkerName { get; set; }
-        public decimal WorkerRating { get; set; }
+        public string? WorkerName { get; set; }
+        public decimal? WorkerRating { get; set; }
         public int AddressId { get; set; }
         public string AdressName { get; set; }
         public decimal Lat { get; set; }

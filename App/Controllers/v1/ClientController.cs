@@ -1,19 +1,15 @@
 using App.Application.Client.Query.GetAll;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using App.Application.Client.Query.GetById;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class ClientController  : ControllerBase
+public class ClientController  : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public ClientController(IMediator mediator) => _mediator = mediator;
-
     /// <summary>
     /// Retrives all app clients
     /// </summary>
@@ -21,7 +17,7 @@ public class ClientController  : ControllerBase
     [HttpGet] 
     public async Task<IActionResult> GetAllAsync()
     {
-        var res = await _mediator.Send(new GetAllClientQuery());
+        var res = await Mediator.Send(new GetAllClientQuery());
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -33,7 +29,7 @@ public class ClientController  : ControllerBase
     [HttpGet("id/{id}")] 
     public async Task<IActionResult> GetByIdAsync([FromRoute]GetByIdClientQuery query)
     {
-        var res = await _mediator.Send(query);
+        var res = await Mediator.Send(query);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 }

@@ -25,6 +25,7 @@ public class GetAllByWorkerQueryHandler : IRequestHandler<GetAllByWorkerQuery, G
             .Include(x => x.JobFile)
             .Select(item => new GetAllJobDto
             {
+                Id = item.Id,
                 AddressId = item.AddressId,
                 AdressName = item.Address.Name,
                 Lat = item.Address.Lat,
@@ -37,7 +38,6 @@ public class GetAllByWorkerQueryHandler : IRequestHandler<GetAllByWorkerQuery, G
                 WorkerRating = item.Worker.Rating,
                 ServiceId = item.ServiceId,
                 ServiceName = item.Service.Name,
-                isActive = item.isActive,
                 isHandled = item.isHandled,
                 Name = item.Name,
                 StatusId = item.StatusId,

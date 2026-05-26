@@ -4,20 +4,15 @@ using App.Application.Address.Command.Update;
 using App.Application.Address.Query.GetAll;
 using App.Application.Address.Query.GetById;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Controllers;
+namespace App.Controllers.v1;
 
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class AddressController : Controller
+public class AddressController : ApiControllerBase
 {
-    private readonly IMediator _mediator;
-    public AddressController(IMediator mediator) => _mediator = mediator;
-
-
     /// <summary>
     /// Create a new address for a specific client.
     /// </summary>
@@ -26,7 +21,7 @@ public class AddressController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateAddressCommand command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -39,7 +34,7 @@ public class AddressController : Controller
     [HttpGet("account/{appId}")]
     public async Task<IActionResult> GetAllAsync([FromRoute] GetAllAddressQuery command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -52,7 +47,7 @@ public class AddressController : Controller
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdAddressQuery command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -65,7 +60,7 @@ public class AddressController : Controller
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
     {
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 
@@ -86,7 +81,7 @@ public class AddressController : Controller
             request.Address
         );
 
-        var res = await _mediator.Send(command);
+        var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }
 }

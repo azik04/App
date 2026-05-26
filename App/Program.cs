@@ -5,26 +5,16 @@ using App.Infrastructure.Hubs;
 using App.Middleware;
 using Asp.Versioning.ApiExplorer;
 using Serilog;
-using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .MinimumLevel.Override("System", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
-    .WriteTo.File(
-        path: builder.Configuration["Serilog:Path"],
-        rollingInterval: Enum.Parse<RollingInterval>(builder.Configuration["Serilog:RollingInterval"]),
-        outputTemplate: builder.Configuration["Serilog:OutputTemplate"]
-    )
-    .CreateLogger();
-
+builder.Services.AddSerilog();
 
 builder.Services.AddControllers();
 
 builder.Services.AddValidationService();
+
+builder.Services.AuthenticationConfig(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer(); 
 
@@ -35,6 +25,7 @@ builder.Services.AddSignalR();
 builder.Services.AddDatabase(builder.Configuration);
 
 builder.Services.AddServices(builder.Configuration);
+
 builder.Host.UseSerilog();
 
 builder.Services.AddMediatR(cfg =>
@@ -45,21 +36,13 @@ builder.Services.AddMediatR(cfg =>
     );
 });
 
-builder.Services.AddCors(opt =>
-{
-    opt.AddPolicy("AppClient", policy =>
-            policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
-                .AllowCredentials()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
-});
+builder.Services.Cors(builder.Configuration);
 
 builder.Services.ConfigureOptions<SwaggerOptionsConfigure>();
 
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
@@ -81,11 +64,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
+app.UseAuthorization();
+
 app.UseCors("AppClient");
 
 app.UseStaticFiles();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
