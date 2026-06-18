@@ -10,4 +10,7 @@ public class GetByIdAccount
     public string FilePath { get; set; }
     public Guid? ClientId { get; set; }
     public Guid? WorkerId { get; set; }
+
+    public int? DeniedCount { get; set; }
+    public int? CompletedCount { get; set; }
 }

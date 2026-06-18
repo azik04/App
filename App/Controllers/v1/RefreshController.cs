@@ -1,4 +1,6 @@
-﻿using Asp.Versioning;
+﻿using App.Application.Address.Query.GetAll;
+using App.Application.Common.Responses;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers.v1;
@@ -8,6 +10,7 @@ namespace App.Controllers.v1;
 [ApiController]
 public class RefreshController : ApiControllerBase
 {
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("statistics")]
     public async Task<IActionResult> GetAllAsync()
     {

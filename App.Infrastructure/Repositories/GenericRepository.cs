@@ -1,56 +1,76 @@
-﻿using System.Linq.Expressions;
-using App.Application.Common.Interfaces;
+﻿using App.Application.Common.Interfaces;
 using App.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-
-namespace App.Infrastructure.Repositories;
+using System.Linq.Expressions;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly AppDbContext _context;
     private readonly DbSet<T> _dbSet;
+
     public GenericRepository(AppDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<T>();
     }
 
-    public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+    public async Task InsertAsync(T entity, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.AnyAsync(predicate);
+        await _dbSet.AddAsync(entity, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public void Delete(T entity)
+    public async Task<IEnumerable<T>> GetAllAsync(
+        CancellationToken cancellationToken = default,
+        params Expression<Func<T, object>>[] includes)
     {
-        _dbSet.Remove(entity);
-        _context.SaveChanges();
+        IQueryable<T> query = _dbSet;
+
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return await query.ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+    public async Task<T?> GetByIdAsync(
+        object id,
+        Func<IQueryable<T>, IQueryable<T>>? include = null,
+        CancellationToken cancellationToken = default)
     {
-        return await _dbSet.ToListAsync();
-    }
+        IQueryable<T> query = _dbSet;
 
-    public async Task<T?> GetByIdAsync(object id)
-    {
-        return await _dbSet.FindAsync(id);
-    }
+        if (include != null)
+            query = include(query);
 
-    public async Task InsertAsync(T entity)
-    {
-        await _dbSet.AddAsync(entity);
-        await _context.SaveChangesAsync();
-    }
+        var keyName = _context.Model.FindEntityType(typeof(T))
+            ?.FindPrimaryKey()
+            ?.Properties
+            .Single()
+            .Name;
 
-    public async Task<T> Update(T entity)
-    {
-        _dbSet.Update(entity);
-        await _context.SaveChangesAsync();
-        return entity;
-    } 
+        return await query.FirstOrDefaultAsync(
+            e => EF.Property<object>(e, keyName!).Equals(id),
+            cancellationToken);
+    }
 
     public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        => _dbSet.Where(predicate);
+
+    public async Task<bool> AnyAsync(
+        Expression<Func<T, bool>> predicate,
+        CancellationToken cancellationToken = default)
+        => await _dbSet.AnyAsync(predicate, cancellationToken);
+
+    public async Task Delete(T entity, CancellationToken cancellationToken = default)
     {
-        return _dbSet.Where(predicate);
+        _dbSet.Remove(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<T> Update(T entity, CancellationToken cancellationToken = default)
+    {
+        _dbSet.Update(entity);
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 }

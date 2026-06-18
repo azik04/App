@@ -1,5 +1,6 @@
 ﻿using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
+using App.Domain.Entities.Rel;
 
 namespace App.Domain.Entities.Acc;
 

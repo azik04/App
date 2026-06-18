@@ -29,7 +29,7 @@ public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand,
 
         if (account.Data.ClientId != null)
         {
-            var client = await _clientRepository.GetByIdAsync(account.Data.ClientId);
+            var client = await _clientRepository.GetByIdAsync(account.Data.ClientId, null, cancellationToken);
 
             var data = new Addresses()
             {
@@ -39,12 +39,12 @@ public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand,
                 Lat = request.Lat,
                 Lng = request.Lng
             };
-            await _addressRepository.InsertAsync(data);
+            await _addressRepository.InsertAsync(data, cancellationToken);
         }
 
         if (account.Data.WorkerId != null)
         {
-            var worker = await _workerRepository.GetByIdAsync(account.Data.WorkerId);
+            var worker = await _workerRepository.GetByIdAsync(account.Data.WorkerId, null, cancellationToken);
 
             var data = new Addresses()
             {
@@ -54,7 +54,7 @@ public class CreateAddressCommandHandler : IRequestHandler<CreateAddressCommand,
                 Lat = request.Lat,
                 Lng = request.Lng
             };
-            await _addressRepository.InsertAsync(data);
+            await _addressRepository.InsertAsync(data, cancellationToken);
         } 
         
         return GenericResponse<bool>.Ok(true);

@@ -1,6 +1,8 @@
-﻿using App.Application.Auth.Command.GenerateAccessToken;
+﻿using App.Application.Address.Query.GetAll;
+using App.Application.Auth.Command.GenerateAccessToken;
 using App.Application.Auth.Command.SignIn;
 using App.Application.Auth.Command.SignOut;
+using App.Application.Common.Responses;
 using Asp.Versioning;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +19,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes user email and password.</param>
     /// <returns>Return an access and refresh token for a specific user.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("sign-in")]
     public async Task<IActionResult> SignInAsync(SignInCommand command)
     {
@@ -24,6 +27,7 @@ public class AuthController : ApiControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("google")]
     public async Task<IActionResult> SignInAsync([FromForm] string token)
     {
@@ -46,6 +50,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes a valid refreshToken.</param>
     /// <returns>Returns new token.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("access-token")]
     public async Task<IActionResult> GenerateAccessTokenAsync([FromBody] GenerateAccessTokenCommand command)
     {
@@ -59,6 +64,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consume a valid refreshToken.</param>
     /// <returns>Return sign out result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPut("sign-out")]
     public async Task<IActionResult> SignOutAsync(SignOutCommand command)
     {

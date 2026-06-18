@@ -85,6 +85,43 @@ namespace App.Infrastructure.Migrations
                     b.ToTable("Worker");
                 });
 
+            modelBuilder.Entity("App.Domain.Entities.History.WorkerJobHistories", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FinishAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkerJobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.HasIndex("WorkerJobId");
+
+                    b.ToTable("WorkerJobHistories");
+                });
+
             modelBuilder.Entity("App.Domain.Entities.List.Addresses", b =>
                 {
                     b.Property<int>("Id")
@@ -99,20 +136,18 @@ namespace App.Infrastructure.Migrations
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("Lat")
+                        .HasColumnType("decimal(18,10)");
+
+                    b.Property<decimal>("Lng")
+                        .HasColumnType("decimal(18,10)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("WorkerId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("X")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Y")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isAcrive")
                         .HasColumnType("bit");
@@ -204,23 +239,6 @@ namespace App.Infrastructure.Migrations
                     b.ToTable("SmsType");
                 });
 
-            modelBuilder.Entity("App.Domain.Entities.List.Statuses", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Status");
-                });
-
             modelBuilder.Entity("App.Domain.Entities.Main.Chats", b =>
                 {
                     b.Property<Guid>("Id")
@@ -253,6 +271,10 @@ namespace App.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,6 +304,9 @@ namespace App.Infrastructure.Migrations
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateOnly>("CreateAt")
+                        .HasColumnType("date");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -292,27 +317,16 @@ namespace App.Infrastructure.Migrations
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int>("Statuses")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("WorkerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isHandled")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("ClientId");
 
                     b.HasIndex("ServiceId");
-
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("Jobs");
                 });
@@ -427,6 +441,36 @@ namespace App.Infrastructure.Migrations
                     b.HasIndex("WorkerId");
 
                     b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.Rel.WorkerJobs", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FinishAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("WorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("WorkerJobs");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.Rel.WorkerServices", b =>
@@ -714,6 +758,33 @@ namespace App.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("App.Domain.Entities.History.WorkerJobHistories", b =>
+                {
+                    b.HasOne("App.Domain.Entities.Main.Jobs", "Jobs")
+                        .WithMany("WorkerJobHistory")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Entities.Acc.Workers", "Workers")
+                        .WithMany("WorkerJobHistory")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Entities.Rel.WorkerJobs", "WorkerJob")
+                        .WithMany("WorkerJobHistories")
+                        .HasForeignKey("WorkerJobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Jobs");
+
+                    b.Navigation("WorkerJob");
+
+                    b.Navigation("Workers");
+                });
+
             modelBuilder.Entity("App.Domain.Entities.List.Addresses", b =>
                 {
                     b.HasOne("App.Domain.Entities.Acc.Clients", "Client")
@@ -755,6 +826,12 @@ namespace App.Infrastructure.Migrations
 
             modelBuilder.Entity("App.Domain.Entities.Main.Jobs", b =>
                 {
+                    b.HasOne("App.Domain.Entities.List.Addresses", "Address")
+                        .WithMany("Job")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("App.Domain.Entities.Acc.Clients", "Client")
                         .WithMany("Job")
                         .HasForeignKey("ClientId")
@@ -767,32 +844,11 @@ namespace App.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.Entities.List.Addresses", "Address")
-                        .WithMany("Job")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Entities.List.Statuses", "Statuse")
-                        .WithMany("Job")
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.Entities.Acc.Workers", "Worker")
-                        .WithMany("Job")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Address");
 
                     b.Navigation("Client");
 
                     b.Navigation("Service");
-
-                    b.Navigation("Statuse");
-
-                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.Main.Payments", b =>
@@ -867,6 +923,25 @@ namespace App.Infrastructure.Migrations
                     b.Navigation("Payments");
 
                     b.Navigation("Worker");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.Rel.WorkerJobs", b =>
+                {
+                    b.HasOne("App.Domain.Entities.Main.Jobs", "Jobs")
+                        .WithMany("WorkerJob")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.Entities.Acc.Workers", "Workers")
+                        .WithMany("WorkerJob")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Jobs");
+
+                    b.Navigation("Workers");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.Rel.WorkerServices", b =>
@@ -982,8 +1057,6 @@ namespace App.Infrastructure.Migrations
                 {
                     b.Navigation("Adresses");
 
-                    b.Navigation("Job");
-
                     b.Navigation("Payment");
 
                     b.Navigation("Review");
@@ -991,6 +1064,10 @@ namespace App.Infrastructure.Migrations
                     b.Navigation("Sms");
 
                     b.Navigation("Subscription");
+
+                    b.Navigation("WorkerJob");
+
+                    b.Navigation("WorkerJobHistory");
 
                     b.Navigation("WorkerService");
                 });
@@ -1012,14 +1089,13 @@ namespace App.Infrastructure.Migrations
                     b.Navigation("Sms");
                 });
 
-            modelBuilder.Entity("App.Domain.Entities.List.Statuses", b =>
-                {
-                    b.Navigation("Job");
-                });
-
             modelBuilder.Entity("App.Domain.Entities.Main.Jobs", b =>
                 {
                     b.Navigation("JobFile");
+
+                    b.Navigation("WorkerJob");
+
+                    b.Navigation("WorkerJobHistory");
                 });
 
             modelBuilder.Entity("App.Domain.Entities.Main.Payments", b =>
@@ -1030,6 +1106,11 @@ namespace App.Infrastructure.Migrations
             modelBuilder.Entity("App.Domain.Entities.Main.Reviews", b =>
                 {
                     b.Navigation("ReviewFile");
+                });
+
+            modelBuilder.Entity("App.Domain.Entities.Rel.WorkerJobs", b =>
+                {
+                    b.Navigation("WorkerJobHistories");
                 });
 
             modelBuilder.Entity("App.Infrastructure.Identity.ApplicationUsers", b =>

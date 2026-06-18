@@ -1,12 +1,11 @@
 using App.Application.Address.Command.Delate;
+using App.Application.Address.Query.GetAll;
+using App.Application.Common.Responses;
 using App.Application.Job.Command.Create;
-using App.Application.Job.Command.Handle;
-using App.Application.Job.Query.GetAllByClient;
 using App.Application.Job.Query.GetAllByWorker;
-using App.Application.Job.Query.GetAllByWorkerHistory;
+using App.Application.Job.Query.GetAllHandled;
 using App.Application.Job.Query.GetById;
 using Asp.Versioning;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Controllers.v1;
@@ -21,6 +20,7 @@ public class JobController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains data required to create a job.</param>
     /// <returns>Returns the result of the job creation operation.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CreateJobCommand command)
     {
@@ -30,25 +30,13 @@ public class JobController : ApiControllerBase
 
 
     /// <summary>
-    /// Retrieves all jobs associated with a specific client.
+    /// Retrieves all handled jobs.
     /// </summary>
     /// <param name="command">Contains the client identifier.</param>
     /// <returns>Returns a list of jobs for the specified client.</returns>
-    [HttpGet("client/{clientId}")]
-    public async Task<IActionResult> GetAllClientAsync([FromRoute] GetAllByClientQuery command)
-    {
-        var res = await Mediator.Send(command);
-        return res.Success ? Ok(res) : BadRequest(res);
-    }
-
-
-    /// <summary>
-    /// Retrieves all jobs handled by a specific worker (job history).
-    /// </summary>
-    /// <param name="command">Contains the worker identifier.</param>
-    /// <returns>Returns a list of jobs associated with the specified worker.</returns>
-    [HttpGet("worker/{workerId}")]
-    public async Task<IActionResult> GetAllWorkerAsync([FromRoute] GetAllByWorkerHistoryQuery command)
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [HttpGet("appId/{appId}/serviceId/{serviceId}")]
+    public async Task<IActionResult> GetAllHandledAsync([FromRoute] GetAllHandledJobQuery command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
@@ -60,8 +48,9 @@ public class JobController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the service identifier.</param>
     /// <returns>Returns a list of jobs for the specified service.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("service/{serviceId}")]
-    public async Task<IActionResult> GetAllByServiceAsync([FromRoute] GetAllByWorkerQuery command)
+    public async Task<IActionResult> GetAllActiveAsync([FromRoute] GetAllActiveJobQuery command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
@@ -73,21 +62,9 @@ public class JobController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the job identifier.</param>
     /// <returns>Returns the job details if found.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdJobQuery command)
-    {
-        var res = await Mediator.Send(command);
-        return res.Success ? Ok(res) : BadRequest(res);
-    }
-
-
-    /// <summary>
-    /// Updates the status or handling information of a job.
-    /// </summary>
-    /// <param name="command">Contains data required to handle the job.</param>
-    /// <returns>Returns the result of the job handling operation.</returns>
-    [HttpPut("handle")]
-    public async Task<IActionResult> HandleAsync([FromBody] HandleJobCommand command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
@@ -99,6 +76,7 @@ public class JobController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the identifier of the job or address to delete.</param>
     /// <returns>Returns the result of the delete operation.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
     {

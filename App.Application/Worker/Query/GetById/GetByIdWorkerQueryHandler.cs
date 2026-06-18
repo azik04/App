@@ -21,7 +21,8 @@ public class GetByIdWorkerQueryHandler : IRequestHandler<GetByIdWorkerQuery, Gen
             .Include(x => x.WorkerService)
                 .ThenInclude(x => x.Service)
             .Include(x => x.Payment)
-            .Include(x => x.Job)
+            .Include(x => x.WorkerJobHistory)
+                .ThenInclude(x => x.Jobs)
             .SingleOrDefaultAsync();
 
         var dto = new GetByIdWorkerDto()
@@ -33,7 +34,7 @@ public class GetByIdWorkerQueryHandler : IRequestHandler<GetByIdWorkerQuery, Gen
             Service = data.WorkerService.Select(x => x.Service.Name).ToList(),
             Rating = data.Rating,
             ReviewCount = data.Review.Count,
-            HistoryCount = data.Job.Where(x => x.StatusId == 3).Count()
+            HistoryCount = data.WorkerJob.Where(x => x.WorkerId == data.Id).Count()
         };
         
         return GenericResponse<GetByIdWorkerDto>.Ok(dto);

@@ -1,3 +1,5 @@
+using App.Application.Address.Query.GetAll;
+using App.Application.Common.Responses;
 using App.Application.Reviews.Command.Create;
 using App.Application.Reviews.Query.GetAll;
 using Asp.Versioning;
@@ -16,6 +18,7 @@ public class ReviewController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains review creation data.</param>
     /// <returns>Returns the result of the review creation process.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateReviewCommand command)
     {
@@ -29,6 +32,7 @@ public class ReviewController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the worker identifier.</param>
     /// <returns>Returns a list of reviews associated with the specified worker.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("worker/{workerId}")]
     public async Task<IActionResult> GetAllAsync([FromRoute] GetAllReviewQuery command)
     {

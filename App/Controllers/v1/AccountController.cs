@@ -9,6 +9,8 @@ using App.Application.Account.Command.SignUp;
 using App.Application.Account.Command.Update;
 using App.Application.Account.Query.GetAll;
 using App.Application.Account.Query.GetById;
+using App.Application.Address.Query.GetAll;
+using App.Application.Common.Responses;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +26,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user registration data.</param>
     /// <returns>Returns result of the registration process.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("sign-up")]
     public async Task<IActionResult> SignUp(SignUpCommand command)
     {
@@ -31,6 +34,7 @@ public class AccountController : ApiControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("add-role")]
     public async Task<IActionResult> AddRoleAsync()
     {
@@ -44,6 +48,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user's email</param>
     /// <returns>Returns confirm result</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("send-mail")]
     public async Task<IActionResult> SentMailAsync([FromBody] SentMailCommand command)
     {
@@ -57,6 +62,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user's email address.</param>
     /// <returns>Returns email sending result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPost("forget-password")]
     public async Task<IActionResult> SentResetPassword([FromBody] SendResetCommand command)
     {
@@ -70,6 +76,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains UserId and confirmation token.</param>
     /// <returns>Returns confirmation result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPut("confirm")]
     public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailCommand command)
     {
@@ -83,6 +90,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains reset token and new password.</param>
     /// <returns>Returns reset result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPut("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
     {
@@ -96,6 +104,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user's id.</param>
     /// <returns>Returns reset result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPatch("id/{id}")]
     public async Task<IActionResult> BanAsync([FromRoute]BanCommand command)
     {
@@ -109,6 +118,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains current and new password.</param>
     /// <returns>Returns password change result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPut("change-password")]
     public async Task<IActionResult> ChangePasswordAsync(ChangePasswordCommand command)
     {
@@ -122,6 +132,7 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user's data.</param>
     /// <returns>Returns update result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpPut("id/{id}")]
     public async Task<IActionResult> Update(string id, [FromForm] UpdateAccountCommand command)
     {
@@ -134,12 +145,14 @@ public class AccountController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains user's data.</param>
     /// <returns>Returns update result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetById([FromRoute] GetByIdQuery command)
     {
         var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
     }
+
 
     [HttpGet("get-all")]
     public async Task<IActionResult> GetAllAsync([FromQuery] GetAllAccountQuery query)

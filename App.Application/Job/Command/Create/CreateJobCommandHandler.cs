@@ -13,19 +13,13 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, Generic
 {
     private readonly IGenericRepository<Jobs> _jobRepository;
     private readonly IGenericRepository<AppFiles> _appFileRepository;
-    private readonly IGenericRepository<Clients> _clientRepository;
-    private readonly IGenericRepository<Domain.Entities.List.Statuses> _statusRepository;
-    private readonly IGenericRepository<Domain.Entities.List.Services> _serviceRepository;
     private readonly IAppFileService _appFileService;
     public CreateJobCommandHandler(IGenericRepository<Jobs> jobRepository, IAppFileService appFileService,
-        IGenericRepository<Domain.Entities.List.Statuses> statusRepository,
-        IGenericRepository<Clients> clientRepository,
-        IGenericRepository<Domain.Entities.List.Services> serviceRepository)
+        IGenericRepository<AppFiles> appFileRepository)
     {
-        _clientRepository = clientRepository;
         _jobRepository = jobRepository;
         _appFileService = appFileService;
-        _serviceRepository = serviceRepository;
+        _appFileRepository = appFileRepository;
     }
 
     public async Task<GenericResponse<bool>> Handle(CreateJobCommand request, CancellationToken cancellationToken)
@@ -36,26 +30,27 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, Generic
             Name = request.Name,
             Description = request.Description,
             ClientId = request.ClientId,
-            isHandled = false,
+            Statuses = Domain.Enums.Statuses.Active,
             AddressId = request.AddressId,
             ServiceId = request.ServiceId,
-            StatusId = 1,
         };
 
-        await _jobRepository.InsertAsync(data);
+        await _jobRepository.InsertAsync(data, cancellationToken);
 
         var insert = await _appFileService.CreateAsync(request.file, Domain.Enums.FileTypes.Job);
+
+        if (insert?.Data == null || !insert.Data.Any())
+            return GenericResponse<bool>.Fail("File upload failed");
 
         foreach (var item in insert.Data)
         {
             var photo = new AppFiles
             {
                 JobId = data.Id,
-                FilePath = item,
-                Id = 1
+                FilePath = item
             };
 
-            await _appFileRepository.InsertAsync(photo);
+            await _appFileRepository.InsertAsync(photo, cancellationToken);
         }
 
         return GenericResponse<bool>.Ok(true);

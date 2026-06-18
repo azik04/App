@@ -1,4 +1,5 @@
 ﻿using App.Infrastructure.Configuration.Acc;
+using App.Infrastructure.Configuration.History;
 using App.Infrastructure.Configuration.List;
 using App.Infrastructure.Configuration.Main;
 using App.Infrastructure.Configuration.Rel;
@@ -23,7 +24,6 @@ public partial class AppDbContext
         builder.ApplyConfiguration(new ReviewFileConfiguration());
         builder.ApplyConfiguration(new ServiceConfiguration());
         builder.ApplyConfiguration(new SmsTypeConfiguration());
-        builder.ApplyConfiguration(new StatusConfiguration());
 
         builder.ApplyConfiguration(new ContactUsConfiguration());
         builder.ApplyConfiguration(new JobConfiguration());
@@ -32,6 +32,9 @@ public partial class AppDbContext
         builder.ApplyConfiguration(new SmsConfiguration());
         builder.ApplyConfiguration(new SubscriptionConfiguration());
 
+        builder.ApplyConfiguration(new WorkerJobConfiguration());
         builder.ApplyConfiguration(new WorkerServiceConfiguration());
+
+        builder.ApplyConfiguration(new WorkerJobHistoryConfiguration());
     }
 }

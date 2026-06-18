@@ -43,7 +43,9 @@ public class AuthService : IAuthService
         if (dto.AuthType == (int)AuthType.System)
         {
             entity = await _userManager.FindByEmailAsync(dto.Email);
-            
+            if (entity == null)
+                return TokenResponse.Fail("User not found");
+              
             var data = await _signInManager.CheckPasswordSignInAsync(entity, dto.Password, lockoutOnFailure: false);
             if (!data.Succeeded)
                 return TokenResponse.Fail("Password or Email is wrong.");

@@ -55,25 +55,28 @@ public class EmailService : IEmailService
         var path = type switch
         {
             EmailTypes.ConfirmationMail => "wwwroot/Emails/ConfirmEmail.html",
-            EmailTypes.ResetPasswordMail => "wwwroot/Emails/ResetPassword.html"
+            EmailTypes.ResetPasswordMail => "wwwroot/Emails/ResetPassword.html",
+            EmailTypes.CongratulationMail => "wwwroot/Emails/CongratulationsEmail.html",
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
 
         var body = await File.ReadAllTextAsync(path);
-        var encodedToken = WebUtility.UrlEncode(token);
+        var encodedToken = Uri.EscapeDataString(token);
 
-        switch (type)
+        body = type switch
         {
-            case EmailTypes.ConfirmationMail:
+            EmailTypes.ConfirmationMail =>
+                body.Replace(
+                    "{{CONFIRM_LINK}}",
+                    $"http://localhost:5173/auth/confirm-mail?userId={userId}&token={encodedToken}&type=1"),
 
-                body = body.Replace("{{CONFIRM_LINK}}",
-                    $"http://localhost:5173/auth/confirm-mail?userId={userId}&token={encodedToken}&type=1");
-                break;
+            EmailTypes.ResetPasswordMail =>
+                body.Replace(
+                    "{{RESET_LINK}}",
+                    $"http://localhost:5173/auth/reset-password?userId={userId}&token={encodedToken}&type=2"),
 
-            case EmailTypes.ResetPasswordMail:
-                body = body.Replace("{{RESET_LINK}}",
-                    $"http://localhost:5173/auth/reset-password?userId={userId}&token={encodedToken}&type=2");
-                break;
-        }
+            _ => body
+        };
 
         return body;
     }

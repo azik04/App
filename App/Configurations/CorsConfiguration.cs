@@ -7,7 +7,7 @@ public static class CorsConfiguration
         services.AddCors(opt =>
         {
             opt.AddPolicy("AppClient", policy =>
-                policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+                policy.WithOrigins("http://localhost:3000", "http://localhost:5173", "http://10.200.17.141:5173")
                     .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod());

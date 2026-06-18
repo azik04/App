@@ -28,7 +28,7 @@ public class GetByIdAddressQueryHandler : IRequestHandler<GetByIdAddressQuery, G
 
     public async Task<GenericResponse<GetByIdAddressDto>> Handle(GetByIdAddressQuery request, CancellationToken cancellationToken)
     {
-        var data = await _addressRepository.GetByIdAsync(request.id);
+        var data = await _addressRepository.GetByIdAsync(request.id, null, cancellationToken);
         if (data == null)
             return GenericResponse<GetByIdAddressDto>.Ok(null);
 

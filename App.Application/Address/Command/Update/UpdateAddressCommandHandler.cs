@@ -14,7 +14,7 @@ public class UpdateAddressCommandHandler : IRequestHandler<UpdateAddressCommand,
 
     public async Task<GenericResponse<bool>> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
-        var data = await _addressRepository.GetByIdAsync(request.id);
+        var data = await _addressRepository.GetByIdAsync(request.id, null, cancellationToken);
         if (data == null)
             return GenericResponse<bool>.Ok(false);
 
@@ -23,7 +23,7 @@ public class UpdateAddressCommandHandler : IRequestHandler<UpdateAddressCommand,
         data.Lng = request.Lng;
         data.Name = request.Name;
 
-        await _addressRepository.Update(data);
+        await _addressRepository.Update(data, cancellationToken);
 
         return GenericResponse<bool>.Ok(true);
     }

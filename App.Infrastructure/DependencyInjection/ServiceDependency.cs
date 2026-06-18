@@ -6,6 +6,7 @@ using App.Application.Common.Interfaces.Helpers;
 using App.Application.Common.Interfaces.Integrations;
 using App.Application.Common.Interfaces.Refresh;
 using App.Domain.Entities.Acc;
+using App.Domain.Entities.History;
 using App.Domain.Entities.List;
 using App.Domain.Entities.Main;
 using App.Domain.Entities.Rel;
@@ -14,7 +15,6 @@ using App.Infrastructure.Context;
 using App.Infrastructure.Helpers;
 using App.Infrastructure.Identity;
 using App.Infrastructure.Integrations;
-using App.Infrastructure.Repositories;
 using App.Infrastructure.Services;
 using App.Infrastructure.Utils.AppSettingModels;
 using Microsoft.AspNetCore.Identity;
@@ -38,17 +38,20 @@ public static class ServiceDependency
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IRefreshService, RefreshService>();
 
+        services.AddScoped<IGenericRepository<WorkerJobHistories>, GenericRepository<WorkerJobHistories>>();
+
         services.AddScoped<IGenericRepository<Refreshes>, GenericRepository<Refreshes>>();
         services.AddScoped<IGenericRepository<Clients>, GenericRepository<Clients>>();
         services.AddScoped<IGenericRepository<Addresses>, GenericRepository<Addresses>>();
         services.AddScoped<IGenericRepository<Workers>, GenericRepository<Workers>>();
-        services.AddScoped<IGenericRepository<Statuses>, GenericRepository<Statuses>>();
 
         services.AddScoped<IGenericRepository<Domain.Entities.List.Services>, GenericRepository<Domain.Entities.List.Services>>();
         services.AddScoped<IGenericRepository<Reviews>, GenericRepository<Reviews>>();
         services.AddScoped<IGenericRepository<AppFiles>, GenericRepository<AppFiles>>();
         services.AddScoped<IGenericRepository<Jobs>, GenericRepository<Jobs>>();
+        services.AddScoped<IGenericRepository<ContactUs>, GenericRepository<ContactUs>>();
         services.AddScoped<IGenericRepository<WorkerServices>, GenericRepository<WorkerServices>>();
+        services.AddScoped<IGenericRepository<WorkerJobs>, GenericRepository<WorkerJobs>>();
 
         services.AddTransient<UserBackgroundJob>();
 

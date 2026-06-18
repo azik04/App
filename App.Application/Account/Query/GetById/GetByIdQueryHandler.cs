@@ -4,20 +4,21 @@ using App.Application.Common.Interfaces.Account;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Application.Account.Query.GetById;
 
 public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GenericResponse<GetByIdAccount>>
 {
     private readonly IAccountService _accountService;
-    private readonly IGenericRepository<Clients> _clientService;
-    private readonly IGenericRepository<Workers> _workerService;
+    private readonly IGenericRepository<Clients> _clientRepository;
+    private readonly IGenericRepository<Workers> _workerRepository;
 
-    public GetByIdQueryHandler(IAccountService accountService, IGenericRepository<Clients> clientService, IGenericRepository<Workers> workerService)
+    public GetByIdQueryHandler(IAccountService accountService, IGenericRepository<Clients> clientRepository, IGenericRepository<Workers> workerRepository)
     {
         _accountService = accountService;
-        _clientService = clientService;
-        _workerService = workerService;
+        _clientRepository = clientRepository;
+        _workerRepository = workerRepository;
     }
 
     public async Task<GenericResponse<GetByIdAccount>> Handle(GetByIdQuery request, CancellationToken cancellationToken)
@@ -31,7 +32,7 @@ public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GenericResponse
 
         if (account.Data.ClientId != null)
         {
-            var client = await _clientService.GetByIdAsync(account.Data.ClientId);
+            var client = await _clientRepository.GetByIdAsync(account.Data.ClientId);
             dto = new GetByIdAccount
             {
                 Id = account.Data.Id,
@@ -46,16 +47,22 @@ public class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, GenericResponse
 
         if (account.Data.WorkerId != null)
         {
-            var client = await _workerService.GetByIdAsync(account.Data.WorkerId);
+            var worker = await _workerRepository.GetByIdAsync(
+                account.Data.WorkerId, 
+                q => q.Include(w => w.WorkerJob)
+            );
+            
             dto = new GetByIdAccount
             {
                 Id = account.Data.Id,
-                Name = client.Name,
-                Surname = client.Surname,
+                Name = worker.Name,
+                Surname = worker.Surname,
                 Email = account.Data.Email,
-                PhoneNumber = client.PhoneNumber,
-                FilePath = client.FilePath,
-                ClientId = account.Data.ClientId
+                PhoneNumber = worker.PhoneNumber,
+                FilePath = worker.FilePath,
+                WorkerId = account.Data.ClientId,
+                DeniedCount = worker.WorkerJob.Count(wj => wj.Status == Domain.Enums.WorkerJobStatus.Canceled),
+                CompletedCount = worker.WorkerJob.Count(wj => wj.Status == Domain.Enums.WorkerJobStatus.Completed),
             };
         }
         return GenericResponse<GetByIdAccount>.Ok(dto);

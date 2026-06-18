@@ -14,11 +14,11 @@ public class DeleteAddressCommandHandler : IRequestHandler<DeleteAddressCommand,
 
     public async Task<GenericResponse<bool>> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
     {
-        var data = await _addressRepository.GetByIdAsync(request.id);
+        var data = await _addressRepository.GetByIdAsync(request.id, null, cancellationToken);
         if (data == null)
             return GenericResponse<bool>.Ok(false);
 
-        _addressRepository.Delete(data);
+        _addressRepository.Delete(data, cancellationToken);
 
         return GenericResponse<bool>.Ok(true);
     }

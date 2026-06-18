@@ -1,7 +1,9 @@
+using App.Application.Address.Query.GetAll;
 using App.Application.Client.Query.GetAll;
+using App.Application.Client.Query.GetById;
+using App.Application.Common.Responses;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using App.Application.Client.Query.GetById;
 
 namespace App.Controllers.v1;
 
@@ -14,6 +16,7 @@ public class ClientController  : ApiControllerBase
     /// Retrives all app clients
     /// </summary>
     /// <returns>Lisr of app clients</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet] 
     public async Task<IActionResult> GetAllAsync()
     {
@@ -26,6 +29,7 @@ public class ClientController  : ApiControllerBase
     /// </summary>
     /// <param name="query">Contains the client identifier</param>
     /// <returns>Returns the client details if found.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
     [HttpGet("id/{id}")] 
     public async Task<IActionResult> GetByIdAsync([FromRoute]GetByIdClientQuery query)
     {

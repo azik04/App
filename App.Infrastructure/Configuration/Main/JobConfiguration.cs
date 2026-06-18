@@ -11,12 +11,9 @@ public class JobConfiguration : IEntityTypeConfiguration<Jobs>
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Client).WithMany(x => x.Job).HasForeignKey(x => x.ClientId).OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(x => x.Worker).WithMany(x => x.Job).HasForeignKey(x => x.WorkerId).OnDelete(DeleteBehavior.Restrict);
         
         builder.HasOne(x => x.Service).WithMany(x => x.Job).HasForeignKey(x => x.ServiceId).OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Statuse).WithMany(x => x.Job).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(x => x.Address).WithMany(x => x.Job).HasForeignKey(x => x.StatusId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Address).WithMany(x => x.Job).HasForeignKey(x => x.AddressId).OnDelete(DeleteBehavior.Restrict);
     }
 }
