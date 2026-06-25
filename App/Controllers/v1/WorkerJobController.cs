@@ -16,7 +16,7 @@ public class WorkerJobController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes data required to create a workerJob.</param>
     /// <returns>Create service for a workerJob result.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateWorkerJobCommand command)
     {

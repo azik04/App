@@ -4,4 +4,4 @@ using MediatR;
 
 namespace App.Application.Account.Query.GetAll;
 
-public sealed record GetAllAccountQuery (int pageNumber, int pageSize) : IRequest<PaginatedResponse<GetByIdAccount>> { }
+public sealed record GetAllAccountQuery (int pageNumber, int pageSize, string roleId) : IRequest<PaginatedResponse<GetByIdAccount>> { }

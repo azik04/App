@@ -1,6 +1,5 @@
-using App.Application.Address.Query.GetAll;
+using App.Application.Common.DTO.Worker;
 using App.Application.Common.Responses;
-using App.Application.Worker.Query.GetAll;
 using App.Application.Worker.Query.GetById;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -13,24 +12,11 @@ namespace App.Controllers.v1;
 public class WorkerController : ApiControllerBase
 {
     /// <summary>
-    /// Retrives all app workers
-    /// </summary>
-    /// <returns>Lisr of app workers</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpGet] 
-    public async Task<IActionResult> GetAllAsync()
-    {
-        var res = await Mediator.Send(new GetAllWorkerQuery());
-        return res.Success ? Ok(res) : BadRequest(res);
-    }
-
-
-    /// <summary>
     /// Retrieves worker by its identifier
     /// </summary>
     /// <param name="query">Contains the worker identifier</param>
     /// <returns>Returns the worker details if found.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<GetByIdWorkerDto>), StatusCodes.Status200OK)]
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdWorkerQuery query)
     {

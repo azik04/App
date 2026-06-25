@@ -19,29 +19,12 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes user email and password.</param>
     /// <returns>Return an access and refresh token for a specific user.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
     [HttpPost("sign-in")]
     public async Task<IActionResult> SignInAsync(SignInCommand command)
     {
         var result = await Mediator.Send(command);
         return result.Success ? Ok(result) : BadRequest(result);
-    }
-
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpPost("google")]
-    public async Task<IActionResult> SignInAsync([FromForm] string token)
-    {
-        if (string.IsNullOrEmpty(token))
-            return BadRequest(new { error = "Token is required" });
-
-        var settings = new GoogleJsonWebSignature.ValidationSettings
-        {
-            Audience = new[] { "641553983301-n4knggtg5vua9ivtimgjkbubrcrjo7j3.apps.googleusercontent.com" }
-        };
-
-        var payload = await GoogleJsonWebSignature.ValidateAsync(token, settings);
-
-        return Ok(new { success = true, user = payload });
     }
 
 
@@ -50,7 +33,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes a valid refreshToken.</param>
     /// <returns>Returns new token.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<string>), StatusCodes.Status200OK)]
     [HttpPost("access-token")]
     public async Task<IActionResult> GenerateAccessTokenAsync([FromBody] GenerateAccessTokenCommand command)
     {
@@ -64,7 +47,7 @@ public class AuthController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consume a valid refreshToken.</param>
     /// <returns>Return sign out result.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
     [HttpPut("sign-out")]
     public async Task<IActionResult> SignOutAsync(SignOutCommand command)
     {

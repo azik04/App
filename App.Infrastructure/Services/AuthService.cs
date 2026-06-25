@@ -118,7 +118,7 @@ public class AuthService : IAuthService
     }
 
 
-     public async Task<GenericResponse<string>> GenerateAccessTokenAsync(string refrashToken)
+    public async Task<GenericResponse<string>> GenerateAccessTokenAsync(string refrashToken)
      {
          var data = await _refreshesRepository.Where(x => x.Token == refrashToken).SingleOrDefaultAsync();
          if (data == null)
@@ -135,8 +135,10 @@ public class AuthService : IAuthService
         };
 
          var accessToken = _tokenService.GenerateAccessToken(jwt);
+         
          return GenericResponse<string>.Ok(accessToken);
      }
+
 
      public async Task<GenericResponse<bool>> SignOutAsync(string refreshToken)
      {
@@ -147,6 +149,7 @@ public class AuthService : IAuthService
          data.IsRevoked = true;
          
          _refreshesRepository.Update(data);
+
          return GenericResponse<bool>.Ok(true);
      }
 }

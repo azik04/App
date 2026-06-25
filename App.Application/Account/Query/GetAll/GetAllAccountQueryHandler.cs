@@ -17,6 +17,6 @@ public class GetAllAccountQueryHandler : IRequestHandler<GetAllAccountQuery, Pag
     }
     public async Task<PaginatedResponse<GetByIdAccount>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
     {
-        return await _accountService.GetAllAsync(request.pageNumber, request.pageSize);
+        return await _accountService.GetAllAsync(request.pageNumber, request.pageSize, request.roleId);
     }
 }

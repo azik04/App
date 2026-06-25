@@ -32,6 +32,7 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobCommand, Generic
             ClientId = request.ClientId,
             Statuses = Domain.Enums.Statuses.Active,
             AddressId = request.AddressId,
+            CreateAt = DateTime.Now,
             ServiceId = request.ServiceId,
         };
 

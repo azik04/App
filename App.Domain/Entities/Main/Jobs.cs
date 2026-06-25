@@ -18,7 +18,7 @@ public class Jobs
     public Addresses Address { get; set; }
     public int ServiceId { get; set; } 
     public Services Service { get; set; }
-    public DateOnly CreateAt { get; set; } 
+    public DateTime CreateAt { get; set; } 
     public List<AppFiles> JobFile { get; set; }
     public List<WorkerJobs> WorkerJob { get; set; }
     public List<WorkerJobHistories> WorkerJobHistory { get; set; }

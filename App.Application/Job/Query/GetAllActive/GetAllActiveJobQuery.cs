@@ -4,4 +4,4 @@ using MediatR;
 
 namespace App.Application.Job.Query.GetAllByWorker;
 
-public record GetAllActiveJobQuery(int serviceId) : IRequest<GenericResponse<List<GetAllJobDto>>>;
+public record GetAllActiveJobQuery(int? serviceId) : IRequest<GenericResponse<List<GetAllJobDto>>>;

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Account\Query\GetById\GetByIdQueryHandler.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
   </ItemGroup>
 

@@ -5,6 +5,7 @@ using App.Application.Common.Interfaces.Integrations;
 using App.Application.Common.Responses;
 using App.Domain.Entities.Acc;
 using App.Domain.Enums;
+using App.Infrastructure.Context;
 using App.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,13 @@ public class AccountService : IAccountService
     private readonly UserManager<ApplicationUsers> _userManager;
     private readonly IGenericRepository<Clients> _clientRep;
     private readonly IEmailService _emailService;
+    private readonly AppDbContext _db;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AccountService(UserManager<ApplicationUsers> userManager,RoleManager<IdentityRole> roleManager, IGenericRepository<Clients> clientRep, IEmailService emailService)
+    public AccountService(UserManager<ApplicationUsers> userManager,RoleManager<IdentityRole> roleManager, 
+        IGenericRepository<Clients> clientRep, IEmailService emailService, AppDbContext db)
     {
+        _db = db;
         _emailService = emailService;
         _userManager = userManager;
         _clientRep = clientRep;
@@ -56,6 +60,8 @@ public class AccountService : IAccountService
     {
         var user = await _userManager.FindByIdAsync(id);
 
+        var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
         if (user == null)
             return GenericResponse<GetByIdAccount>.Fail("User not found");
         
@@ -68,6 +74,7 @@ public class AccountService : IAccountService
             PhoneNumber = user.PhoneNumber,
             ClientId = user.ClientId,
             WorkerId = user.WorkerId,
+            RoleName = role
         };
 
         return GenericResponse<GetByIdAccount>.Ok(dto);
@@ -171,20 +178,29 @@ public class AccountService : IAccountService
         return GenericResponse<bool>.Ok(true);
     }
 
-    public async Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize, string roleId)
     {
-        var data = await _userManager.Users.Skip((pageNumber - 1) * pageSize).Take(pageSize).OrderBy(x => x.Id).Select(x => new GetByIdAccount()
-        {
-            Id = x.Id,
-            Name = x.UserName,
-            Surname = x.UserName,
-            Email = x.Email,
-            PhoneNumber = x.PhoneNumber,
-            ClientId = x.ClientId,
-            WorkerId = x.WorkerId,
-        }).ToListAsync();
+        var query = _userManager.Users
+            .Where(u => _db.UserRoles
+                .Any(ur => ur.UserId == u.Id && ur.RoleId == roleId));
 
-        var totalCount = await _userManager.Users.CountAsync();
+        var totalCount = await query.CountAsync();
+
+        var data = await query
+            .OrderBy(x => x.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => new GetByIdAccount()
+            {
+                Id = x.Id,
+                Name = x.UserName,
+                Surname = x.UserName,
+                Email = x.Email,
+                PhoneNumber = x.PhoneNumber,
+                ClientId = x.ClientId,
+                WorkerId = x.WorkerId,
+            })
+            .ToListAsync();
 
         return PaginatedResponse<GetByIdAccount>.Ok(data, pageNumber, pageSize, totalCount);
     }

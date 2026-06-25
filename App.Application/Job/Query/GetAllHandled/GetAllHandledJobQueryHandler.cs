@@ -26,7 +26,7 @@ public class GetAllHandledJobQueryHandler : IRequestHandler<GetAllHandledJobQuer
     public async Task<GenericResponse<List<GetAllJobDto>>> Handle(GetAllHandledJobQuery request, CancellationToken cancellationToken)
     {
         var user = await _accountService.GetById(request.appId);
-        if (user == null)
+        if (user.Data == null)
             return GenericResponse<List<GetAllJobDto>>.Fail();
 
         List<GetAllJobDto> dtos = new();
@@ -36,6 +36,7 @@ public class GetAllHandledJobQueryHandler : IRequestHandler<GetAllHandledJobQuer
             dtos = await _jobRepository
                 .Where(x => x.ClientId == user.Data.ClientId && x.ServiceId == request.serviceId &&
                             (x.Statuses == Domain.Enums.Statuses.IsHandled || x.Statuses == Domain.Enums.Statuses.Done))
+                .OrderByDescending(x => x.CreateAt)
                 .Select(item => new GetAllJobDto
                 {
                     AddressId = item.AddressId,

@@ -3,6 +3,7 @@ using App.Application.Address.Command.Delate;
 using App.Application.Address.Command.Update;
 using App.Application.Address.Query.GetAll;
 using App.Application.Address.Query.GetById;
+using App.Application.Common.DTO.Address;
 using App.Application.Common.Responses;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +15,6 @@ namespace App.Controllers.v1;
 [ApiController]
 public class AddressController : ApiControllerBase
 {
-    /// <summary>
-    /// Create a new address for a specific client.
-    /// </summary>
-    /// <param name="command">Contains address creating data.</param>
-    /// <returns>Returns create adress result</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateAddressCommand command)
-    {
-        var res = await Mediator.Send(command);
-        return res.Success ? Ok(res) : BadRequest(res);
-    }
-
-
     /// <summary>
     /// Retrieves all addresses associated with a specific worker.
     /// </summary>
@@ -47,7 +34,7 @@ public class AddressController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the address identifier.</param>
     /// <returns>Returns address with a specific identifier.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<GetByIdAddressDto>), StatusCodes.Status200OK)]
     [HttpGet("id/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] GetByIdAddressQuery command)
     {
@@ -57,13 +44,13 @@ public class AddressController : ApiControllerBase
 
 
     /// <summary>
-    /// Remove an existin address with a specific identifier.
+    /// Create a new address for a specific client.
     /// </summary>
-    /// <param name="command">Contains the address identifier.</param>
-    /// <returns>Returns remove adress result</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpDelete("id/{id}")]
-    public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
+    /// <param name="command">Contains address creating data.</param>
+    /// <returns>Returns create adress result</returns>
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] CreateAddressCommand command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
@@ -75,9 +62,9 @@ public class AddressController : ApiControllerBase
     /// </summary>
     /// <param name="command">Contains the address updating data.</param>
     /// <returns>Returns update adress result</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
     [HttpPut("id/{id}")]
-    public async Task<IActionResult> UpdateAsunc([FromRoute]int id, [FromBody] UpdateAddressCommand request)
+    public async Task<IActionResult> UpdateAsunc([FromRoute] int id, [FromBody] UpdateAddressCommand request)
     {
         var command = new UpdateAddressCommand(
             id,
@@ -87,6 +74,20 @@ public class AddressController : ApiControllerBase
             request.Address
         );
 
+        var res = await Mediator.Send(command);
+        return res.Success ? Ok(res) : BadRequest(res);
+    }
+
+
+    /// <summary>
+    /// Remove an existin address with a specific identifier.
+    /// </summary>
+    /// <param name="command">Contains the address identifier.</param>
+    /// <returns>Returns remove adress result</returns>
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
+    [HttpDelete("id/{id}")]
+    public async Task<IActionResult> RemoveAsync([FromRoute] DeleteAddressCommand command)
+    {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
     }

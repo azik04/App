@@ -17,7 +17,7 @@ public class WorkerServiceController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes userId and serviceId.</param>
     /// <returns>Create service for a user result.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateWorkerServiceCommand command )
     {
@@ -31,7 +31,7 @@ public class WorkerServiceController : ApiControllerBase
     /// </summary>
     /// <param name="command">Consumes a worker's service identifier.</param>
     /// <returns>Remove service for a user result.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
     [HttpDelete("id/{id}")]
     public async Task<IActionResult> RemoveAll([FromRoute] DeleteWorkerServiceCommand command)
     {

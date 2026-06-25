@@ -16,7 +16,8 @@ public class GetAllActiveJobQueryHandler : IRequestHandler<GetAllActiveJobQuery,
     public async Task<GenericResponse<List<GetAllJobDto>>> Handle(GetAllActiveJobQuery request, CancellationToken cancellationToken)
     {
         var data = await _jobRepository
-            .Where(x => x.ServiceId == request.serviceId && x.Statuses == Domain.Enums.Statuses.Active)
+            .Where(x => (!request.serviceId.HasValue || x.ServiceId == request.serviceId) && x.Statuses == Domain.Enums.Statuses.Active)
+            .OrderByDescending(x => x.CreateAt)
             .Include(x => x.Client)
             .Include(x => x.Address)
             .Include(x => x.Service)

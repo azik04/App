@@ -42,7 +42,7 @@ public class AppFileService : IAppFileService
             {
                 Mode = ResizeMode.Crop,
                 Position = AnchorPositionMode.Center,
-                Size = new Size(400, 400)
+                Size = new Size(1200, 675)
             }));
 
             var urlPath = $"/{type}s/{fileName}"; 

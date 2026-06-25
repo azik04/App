@@ -10,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSerilog();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault;
+    });
 
 builder.Services.AddValidationService();
 

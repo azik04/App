@@ -62,7 +62,7 @@ public class GetByIdJobQueryHandler : IRequestHandler<GetByIdJobQuery, GenericRe
             }).FirstOrDefault(),
             WorkerJobHistory = item.WorkerJobHistory.Select(wj => new GetAllWorkerJobHistoryDto
             {
-                Status = wj.Status,
+                Status = wj.Status.ToString(),
                 Id = wj.Id,
                 WorkerId = wj.WorkerId,
                 WorkerName = wj.Workers.Name + " " + wj.Workers.Surname,

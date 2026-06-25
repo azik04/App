@@ -15,5 +15,5 @@ public interface IAccountService
     Task<GenericResponse<bool>> BanAsync(string id);
 
     Task<GenericResponse<GetByIdAccount>> GetById(string id);
-    Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize);
+    Task<PaginatedResponse<GetByIdAccount>> GetAllAsync(int pageNumber, int pageSize, string roleId);
 }

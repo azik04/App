@@ -1,4 +1,5 @@
 using App.Application.Address.Query.GetAll;
+using App.Application.Common.DTO.Review;
 using App.Application.Common.Responses;
 using App.Application.Reviews.Command.Create;
 using App.Application.Reviews.Query.GetAll;
@@ -14,13 +15,13 @@ namespace App.Controllers.v1;
 public class ReviewController : ApiControllerBase
 {
     /// <summary>
-    /// Creates a new review.
+    /// Retrieves all reviews for a specific worker.
     /// </summary>
-    /// <param name="command">Contains review creation data.</param>
-    /// <returns>Returns the result of the review creation process.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateReviewCommand command)
+    /// <param name="command">Contains the worker identifier.</param>
+    /// <returns>Returns a list of reviews associated with the specified worker.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllReviewDto>>), StatusCodes.Status200OK)]
+    [HttpGet("worker/{workerId}")]
+    public async Task<IActionResult> GetAllAsync([FromRoute] GetAllReviewQuery command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);
@@ -28,13 +29,13 @@ public class ReviewController : ApiControllerBase
 
 
     /// <summary>
-    /// Retrieves all reviews for a specific worker.
+    /// Creates a new review.
     /// </summary>
-    /// <param name="command">Contains the worker identifier.</param>
-    /// <returns>Returns a list of reviews associated with the specified worker.</returns>
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
-    [HttpGet("worker/{workerId}")]
-    public async Task<IActionResult> GetAllAsync([FromRoute] GetAllReviewQuery command)
+    /// <param name="command">Contains review creation data.</param>
+    /// <returns>Returns the result of the review creation process.</returns>
+    [ProducesResponseType(typeof(GenericResponse<bool>), StatusCodes.Status200OK)]
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] CreateReviewCommand command)
     {
         var res = await Mediator.Send(command);
         return res.Success ? Ok(res) : BadRequest(res);

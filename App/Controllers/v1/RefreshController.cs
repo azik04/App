@@ -1,5 +1,8 @@
 ﻿using App.Application.Address.Query.GetAll;
+using App.Application.Common.DTO.ContactUs;
+using App.Application.Common.DTO.Refresh;
 using App.Application.Common.Responses;
+using App.Application.ContactUs.Query.GetById;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +13,11 @@ namespace App.Controllers.v1;
 [ApiController]
 public class RefreshController : ApiControllerBase
 {
-    [ProducesResponseType(typeof(GenericResponse<List<GetAllAddressQuery>>), StatusCodes.Status200OK)]
+    /// <summary>
+    /// Retrieves a daily sign in statistics.
+    /// </summary>
+    /// <returns>Returns a daily sign in statistics result.</returns>
+    [ProducesResponseType(typeof(GenericResponse<List<GetAllRefreshDto>>), StatusCodes.Status200OK)]
     [HttpGet("statistics")]
     public async Task<IActionResult> GetAllAsync()
     {
